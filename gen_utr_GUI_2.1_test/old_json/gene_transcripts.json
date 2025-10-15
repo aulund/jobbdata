@@ -1,0 +1,242 @@
+{
+    "ANK1": {
+        "Transcript": "NM_001142446.1",
+        "Disease": "AD"
+    },
+    "SPTB": {
+        "Transcript": "NM_001024858.2",
+        "Disease": "AD"
+    },
+    "SPTA1": {
+        "Transcript": "NM_003126.2",
+        "Disease": "AR, AD"
+    },
+    "SLC4A1": {
+        "Transcript": "NM_000342.3",
+        "Disease": "AD, AR"
+    },
+    "EPB42": {
+        "Transcript": "NM_000119.2",
+        "Disease": "AR"
+    },
+    "EPB41": {
+        "Transcript": "NM_001166005.1",
+        "Disease": "?AD"
+    },
+    "GYPA": {
+        "Transcript": "NM_002099",
+        "Disease": ""
+    },
+    "GYPC": {
+        "Transcript": "NM_002101",
+        "Disease": ""
+    },
+    "RHAG": {
+        "Transcript": "NM_000324.2",
+        "Disease": "AD, AR"
+    },
+    "PIEZO1": {
+        "Transcript": "NM_001142864.3",
+        "Disease": "AD"
+    },
+    "KCNN4": {
+        "Transcript": "NM_002250.2",
+        "Disease": "AD"
+    },
+    "ABCB6": {
+        "Transcript": "NM_005689.2",
+        "Disease": "AD"
+    },
+    "SLC2A1": {
+        "Transcript": "NM_006516.2",
+        "Disease": "AD"
+    },
+    "ABCG5": {
+        "Transcript": "NM_022436, XM_005264482",
+        "Disease": "AR"
+    },
+    "ABCG8": {
+        "Transcript": "NM_022437",
+        "Disease": "AR"
+    },
+    "CD59": {
+        "Transcript": "NM_000611, NM_203331, NM_001127225, NM_001127226, NM_203329, NM_203330, NM_001127227, XM_005253257",
+        "Disease": "AR"
+    },
+    "ADD2": {
+        "Transcript": "NM_001617.3",
+        "Disease": ""
+    },
+    "RHCE": {
+        "Transcript": "NM_020485",
+        "Disease": "AR"
+    },
+    "STOM": {
+        "Transcript": "NM_004099.5",
+        "Disease": "AR"
+    },
+    "CD47": {
+        "Transcript": "NM_001777",
+        "Disease": ""
+    },
+    "EPB49/ DMTN": {
+        "Transcript": "NM_001978",
+        "Disease": ""
+    },
+    "KEL": {
+        "Transcript": "NM_000420",
+        "Disease": ""
+    },
+    "ABCG2": {
+        "Transcript": "NM_004827",
+        "Disease": ""
+    },
+    "RHD": {
+        "Transcript": "NM_001282867, NM_016124",
+        "Disease": ""
+    },
+    "XK": {
+        "Transcript": "NM_021083.3",
+        "Disease": "XL"
+    },
+    "G6PD": {
+        "Transcript": "NM_000402.4",
+        "Disease": "XLR"
+    },
+    "PKLR": {
+        "Transcript": "NM_000298.5",
+        "Disease": "AR"
+    },
+    "NT5C3": {
+        "Transcript": "NM_001002010.2",
+        "Disease": "AR"
+    },
+    "GPI": {
+        "Transcript": "NM_001289789.1",
+        "Disease": "AR"
+    },
+    "PGK1": {
+        "Transcript": "NM_000291.3",
+        "Disease": "XLR"
+    },
+    "HK1": {
+        "Transcript": "NM_033496.2",
+        "Disease": "AR"
+    },
+    "TPI1": {
+        "Transcript": "NM_001159287.1",
+        "Disease": "AR"
+    },
+    "AK1": {
+        "Transcript": "NM_000476.2",
+        "Disease": "AR"
+    },
+    "GSS": {
+        "Transcript": "NM_000178.3",
+        "Disease": "AR"
+    },
+    "GCLC": {
+        "Transcript": "NM_001498.3",
+        "Disease": "AR"
+    },
+    "PFKM": {
+        "Transcript": "NM_001166686.1",
+        "Disease": "AR"
+    },
+    "PFKL": {
+        "Transcript": "NM_002626, NM_001002021",
+        "Disease": ""
+    },
+    "ALDOA": {
+        "Transcript": "NM_000034.3",
+        "Disease": "AR"
+    },
+    "ADA": {
+        "Transcript": "NM_000022",
+        "Disease": "AR"
+    },
+    "BPGM": {
+        "Transcript": "NM_199186.2",
+        "Disease": "AR"
+    },
+    "GPX1": {
+        "Transcript": "NM_000581.3",
+        "Disease": "AR"
+    },
+    "PGLS": {
+        "Transcript": "NM_012088",
+        "Disease": ""
+    },
+    "GSR": {
+        "Transcript": "NM_000637.3",
+        "Disease": "AR"
+    },
+    "PRDX1": {
+        "Transcript": "NM_18167",
+        "Disease": ""
+    },
+    "GSTP1": {
+        "Transcript": "NM_000852",
+        "Disease": ""
+    },
+    "HMOX1": {
+        "Transcript": "NM_002133",
+        "Disease": "?AR"
+    },
+    "PGD": {
+        "Transcript": "NM_002631.3",
+        "Disease": "AD"
+    },
+    "CDAN1": {
+        "Transcript": "NM_138477.2",
+        "Disease": ""
+    },
+    "C15orf41": {
+        "Transcript": "NM_001130010.2",
+        "Disease": ""
+    },
+    "SEC23B": {
+        "Transcript": "NM_032985.4",
+        "Disease": ""
+    },
+    "KIF23": {
+        "Transcript": "NM_138555.3",
+        "Disease": ""
+    },
+    "KLF1": {
+        "Transcript": "NM_006563.4",
+        "Disease": ""
+    },
+    "GATA1": {
+        "Transcript": "NM_002049.3",
+        "Disease": "XLR"
+    },
+    "UGT1A1": {
+        "Transcript": "NM_000463",
+        "Disease": "AR"
+    },
+    "MTRR": {
+        "Transcript": "NM_024010.2",
+        "Disease": "AR"
+    },
+    "SLCO1B1": {
+        "Transcript": "",
+        "Disease": ""
+    },
+    "LPIN2": {
+        "Transcript": "NM_014646.2",
+        "Disease": ""
+    },
+    "HBB": {
+        "Transcript": "",
+        "Disease": ""
+    },
+    "HBA1": {
+        "Transcript": "",
+        "Disease": ""
+    },
+    "HbA2": {
+        "Transcript": "",
+        "Disease": ""
+    }
+}

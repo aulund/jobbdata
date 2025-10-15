@@ -1,0 +1,18 @@
+{
+    "transcripts": {
+        "GENE1": "Transcript1",
+        "GENE2": "Transcript2"
+    },
+    "diseases": {
+        "GENE1": "Disease1",
+        "GENE2": "Disease2"
+    },
+    "new_genes": {
+        "GENE3": "Transcript3",
+        "GENE4": "Transcript4"
+    },
+    "new_gene_diseases": {
+        "GENE3": "Disease3",
+        "GENE4": "Disease4"
+    }
+}

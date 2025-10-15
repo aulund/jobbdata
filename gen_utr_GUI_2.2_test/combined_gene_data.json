@@ -1,0 +1,403 @@
+{
+    "Koagulation": {
+        "F2": {
+            "Transcript": "NM_000506",
+            "Disease": "Prothrombinbrist eller trombofili",
+            "Category": "Koagulation"
+        },
+        "F5": {
+            "Transcript": "NM_000130",
+            "Disease": "Faktor V Leiden eller Faktor V-brist",
+            "Category": "Koagulation"
+        },
+        "F7": {
+            "Transcript": "NM_019616",
+            "Disease": "Faktor VII-brist",
+            "Category": "Koagulation"
+        },
+        "F8": {
+            "Transcript": "NM_000132",
+            "Disease": "Hemofili A",
+            "Category": "Koagulation"
+        },
+        "F9": {
+            "Transcript": "NM_000133",
+            "Disease": "Hemofili B",
+            "Category": "Koagulation"
+        },
+        "F10": {
+            "Transcript": "NM_000504",
+            "Disease": "Faktor X-brist",
+            "Category": "Koagulation"
+        },
+        "F11": {
+            "Transcript": "NM_000128",
+            "Disease": "Hemofili C",
+            "Category": "Koagulation"
+        },
+        "F12": {
+            "Transcript": "NM_000505",
+            "Disease": "Faktor XII-brist (Hageman-faktor)",
+            "Category": "Koagulation"
+        },
+        "F13A1": {
+            "Transcript": "NM_001994",
+            "Disease": "Faktor XIII-brist",
+            "Category": "Koagulation"
+        },
+        "VWF": {
+            "Transcript": "NM_000552",
+            "Disease": "von Willebrands sjukdom",
+            "Category": "Koagulation"
+        },
+        "SERPINC1": {
+            "Transcript": "NM_000488",
+            "Disease": "Antitrombinbrist",
+            "Category": "Koagulation"
+        },
+        "PROC": {
+            "Transcript": "NM_000312",
+            "Disease": "Protein C-brist",
+            "Category": "Koagulation"
+        },
+        "PROS1": {
+            "Transcript": "NM_000313",
+            "Disease": "Protein S-brist",
+            "Category": "Koagulation"
+        },
+        "PLAT": {
+            "Transcript": "NM_000930",
+            "Disease": "Fibrinolyssjukdom",
+            "Category": "Koagulation"
+        },
+        "PLG": {
+            "Transcript": "NM_002659",
+            "Disease": "Plasminogenbrist",
+            "Category": "Koagulation"
+        },
+        "THBD": {
+            "Transcript": "NM_000361",
+            "Disease": "Trombomodulinbrist",
+            "Category": "Koagulation"
+        },
+        "GP1BA": {
+            "Transcript": "NM_000173",
+            "Disease": "Bernard-Souliers syndrom",
+            "Category": "Koagulation"
+        },
+        "GP1BB": {
+            "Transcript": "NM_000407",
+            "Disease": "Bernard-Souliers syndrom",
+            "Category": "Koagulation"
+        },
+        "ITGA2B": {
+            "Transcript": "NM_000419",
+            "Disease": "Glanzmanns trombasteni",
+            "Category": "Koagulation"
+        },
+        "ITGB3": {
+            "Transcript": "NM_000212",
+            "Disease": "Glanzmanns trombasteni",
+            "Category": "Koagulation"
+        },
+        "FGB": {
+            "Transcript": "NM_005141",
+            "Disease": "Fibrinogenbrist",
+            "Category": "Koagulation"
+        },
+        "FGA": {
+            "Transcript": "NM_000508",
+            "Disease": "Fibrinogenbrist",
+            "Category": "Koagulation"
+        },
+        "FGG": {
+            "Transcript": "NM_000509",
+            "Disease": "Fibrinogenbrist",
+            "Category": "Koagulation"
+        }
+    },
+    "Medfodd anemi": {
+        "ANK1": {
+            "Transcript": "NM_001142446",
+            "Disease": "Hereditär sfärocytos",
+            "Category": "Medfodd anemi"
+        },
+        "SPTB": {
+            "Transcript": "NM_001024858",
+            "Disease": "Hereditär sfärocytos",
+            "Category": "Medfodd anemi"
+        },
+        "SPTA1": {
+            "Transcript": "NM_003126",
+            "Disease": "Hereditär elliptocytos",
+            "Category": "Medfodd anemi"
+        },
+        "SLC4A1": {
+            "Transcript": "NM_000342",
+            "Disease": "Hereditär sfärocytos",
+            "Category": "Medfodd anemi"
+        },
+        "EPB42": {
+            "Transcript": "NM_000119",
+            "Disease": "Hereditär sfärocytos",
+            "Category": "Medfodd anemi"
+        },
+        "EPB41": {
+            "Transcript": "NM_001146335",
+            "Disease": "Hereditär elliptocytos",
+            "Category": "Medfodd anemi"
+        },
+        "GYPA": {
+            "Transcript": "NM_002099",
+            "Disease": "MNS blodgruppsantigen",
+            "Category": "Medfodd anemi"
+        },
+        "GYPC": {
+            "Transcript": "NM_002101",
+            "Disease": "Gerbich blodgruppsantigen",
+            "Category": "Medfodd anemi"
+        },
+        "RHAG": {
+            "Transcript": "NM_000324",
+            "Disease": "Rhnull syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "PIEZO1": {
+            "Transcript": "NM_001142864",
+            "Disease": "Hereditär xerocytos",
+            "Category": "Medfodd anemi"
+        },
+        "KCNN4": {
+            "Transcript": "NM_002250",
+            "Disease": "Gardoskanalopati",
+            "Category": "Medfodd anemi"
+        },
+        "ABCB6": {
+            "Transcript": "NM_005689",
+            "Disease": "Lan blodgruppsantigen",
+            "Category": "Medfodd anemi"
+        },
+        "SLC2A1": {
+            "Transcript": "NM_006516",
+            "Disease": "Glut1-bristsyndrom",
+            "Category": "Medfodd anemi"
+        },
+        "ABCG5": {
+            "Transcript": "NM_022436",
+            "Disease": "Sitosterolemi",
+            "Category": "Medfodd anemi"
+        },
+        "ABCG8": {
+            "Transcript": "NM_022437",
+            "Disease": "Sitosterolemi",
+            "Category": "Medfodd anemi"
+        },
+        "CD59": {
+            "Transcript": "NM_000611",
+            "Disease": "Paroxysmal nattlig hemoglobinuri",
+            "Category": "Medfodd anemi"
+        },
+        "ADD2": {
+            "Transcript": "NM_001615",
+            "Disease": "Hereditär elliptocytos",
+            "Category": "Medfodd anemi"
+        },
+        "RHCE": {
+            "Transcript": "NM_020485",
+            "Disease": "Rhnull syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "STOM": {
+            "Transcript": "NM_003131",
+            "Disease": "Överhydrerad hereditär stomatocytos",
+            "Category": "Medfodd anemi"
+        },
+        "CD47": {
+            "Transcript": "NM_001777",
+            "Disease": "Rhnull syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "KEL": {
+            "Transcript": "NM_000420",
+            "Disease": "Kell blodgruppsantigen",
+            "Category": "Medfodd anemi"
+        },
+        "ABCG2": {
+            "Transcript": "NM_004827",
+            "Disease": "Bröstcancerresistensprotein",
+            "Category": "Medfodd anemi"
+        },
+        "RHD": {
+            "Transcript": "NM_016124",
+            "Disease": "Rhnull syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "XK": {
+            "Transcript": "NM_021083",
+            "Disease": "McLeods syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "G6PD": {
+            "Transcript": "NM_000402",
+            "Disease": "G6PD-brist",
+            "Category": "Medfodd anemi"
+        },
+        "PKLR": {
+            "Transcript": "NM_000298",
+            "Disease": "Pyruvatkinasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "NT5C3": {
+            "Transcript": "NM_001002",
+            "Disease": "Hemolytisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "GPI": {
+            "Transcript": "NM_000175",
+            "Disease": "Glukosfosfatisomerasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "PGK1": {
+            "Transcript": "NM_000291",
+            "Disease": "Fosfoglyceratkinasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "HK1": {
+            "Transcript": "NM_033493",
+            "Disease": "Hexokinasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "TPI1": {
+            "Transcript": "NM_001161",
+            "Disease": "Triosefosfatisomerasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "AK1": {
+            "Transcript": "NM_000476",
+            "Disease": "Adenylatkinasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "GSS": {
+            "Transcript": "NM_000178",
+            "Disease": "Glutation-syntetasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "GCLC": {
+            "Transcript": "NM_001498",
+            "Disease": "Gamma-glutamylcystein-syntetasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "PFKM": {
+            "Transcript": "NM_000289",
+            "Disease": "Glykogenlagringssjukdom typ VII",
+            "Category": "Medfodd anemi"
+        },
+        "PFKL": {
+            "Transcript": "NM_002625",
+            "Disease": "Fosfofruktokinasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "ALDOA": {
+            "Transcript": "NM_000034",
+            "Disease": "Aldolas A-brist",
+            "Category": "Medfodd anemi"
+        },
+        "ADA": {
+            "Transcript": "NM_000022",
+            "Disease": "Adenosindeaminasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "BPGM": {
+            "Transcript": "NM_001727",
+            "Disease": "2,3-BPG mutasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "GPX1": {
+            "Transcript": "NM_000581",
+            "Disease": "Glutationperoxidasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "GSTP1": {
+            "Transcript": "NM_000852",
+            "Disease": "Glutation S-transferasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "HMOX1": {
+            "Transcript": "NM_002133",
+            "Disease": "Hemoxigenasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "PGD": {
+            "Transcript": "NM_002631",
+            "Disease": "6-fosfoglukonatdehydrogenasbrist",
+            "Category": "Medfodd anemi"
+        },
+        "CDAN1": {
+            "Transcript": "NM_138477",
+            "Disease": "Medfödd dyserytropoetisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "KLF1": {
+            "Transcript": "NM_006563",
+            "Disease": "Medfödd dyserytropoetisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "LPIN2": {
+            "Transcript": "NM_014646",
+            "Disease": "Majeeds syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "SEC23B": {
+            "Transcript": "NM_032985",
+            "Disease": "Medfödd dyserytropoetisk anemi typ II",
+            "Category": "Medfodd anemi"
+        },
+        "C15orf41": {
+            "Transcript": "NM_001135574",
+            "Disease": "Medfödd dyserytropoetisk anemi typ I",
+            "Category": "Medfodd anemi"
+        },
+        "KIF23": {
+            "Transcript": "NM_138555",
+            "Disease": "Medfödd dyserytropoetisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "GATA1": {
+            "Transcript": "NM_002049",
+            "Disease": "X-bunden dyserytropoetisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "UGT1A1": {
+            "Transcript": "NM_000463",
+            "Disease": "Crigler-Najjars syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "MTRR": {
+            "Transcript": "NM_024010",
+            "Disease": "Homocystinuri-megaloblastisk anemi",
+            "Category": "Medfodd anemi"
+        },
+        "SLCO1B1": {
+            "Transcript": "NM_006446",
+            "Disease": "Rotors syndrom",
+            "Category": "Medfodd anemi"
+        },
+        "HBB": {
+            "Transcript": "NM_000518",
+            "Disease": "Beta-thalassemi",
+            "Category": "Medfodd anemi"
+        },
+        "HBA1": {
+            "Transcript": "NM_000558",
+            "Disease": "Alfa-thalassemi",
+            "Category": "Medfodd anemi"
+        },
+        "HBA2": {
+            "Transcript": "NM_000517",
+            "Disease": "Alfa-thalassemi",
+            "Category": "Medfodd anemi"
+        }
+    }
+}
+
+           

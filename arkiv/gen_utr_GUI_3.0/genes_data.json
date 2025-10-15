@@ -1,0 +1,307 @@
+{
+    "ANK1": {
+        "hgnc_id": "492",
+        "transcript": "NM_001142446.1",
+        "genetic_disease_models": "AD"
+    },
+    "SPTB": {
+        "hgnc_id": "11274",
+        "transcript": "NM_001024858.2",
+        "genetic_disease_models": "AD"
+    },
+    "SPTA1": {
+        "hgnc_id": "11272",
+        "transcript": "NM_003126.2",
+        "genetic_disease_models": "AR, AD"
+    },
+    "SLC4A1": {
+        "hgnc_id": "11027",
+        "transcript": "NM_000342.3",
+        "genetic_disease_models": "AD, AR"
+    },
+    "EPB42": {
+        "hgnc_id": "3381",
+        "transcript": "NM_000119.2",
+        "genetic_disease_models": "AR"
+    },
+    "EPB41": {
+        "hgnc_id": "3377",
+        "transcript": "NM_001166005.1",
+        "genetic_disease_models": "?AD"
+    },
+    "GYPA": {
+        "hgnc_id": "4702",
+        "transcript": "NM_002099",
+        "genetic_disease_models": ""
+    },
+    "GYPC": {
+        "hgnc_id": "4704",
+        "transcript": "NM_002101",
+        "genetic_disease_models": ""
+    },
+    "RHAG": {
+        "hgnc_id": "10006",
+        "transcript": "NM_000324.2",
+        "genetic_disease_models": "AD, AR"
+    },
+    "PIEZO1": {
+        "hgnc_id": "28993",
+        "transcript": "NM_001142864.3",
+        "genetic_disease_models": "AD"
+    },
+    "KCNN4": {
+        "hgnc_id": "6293",
+        "transcript": "NM_002250.2",
+        "genetic_disease_models": "AD"
+    },
+    "ABCB6": {
+        "hgnc_id": "47",
+        "transcript": "NM_005689.2",
+        "genetic_disease_models": "AD"
+    },
+    "SLC2A1": {
+        "hgnc_id": "11005",
+        "transcript": "NM_006516.2",
+        "genetic_disease_models": "AD"
+    },
+    "ABCG5": {
+        "hgnc_id": "13886",
+        "transcript": "NM_022436, XM_005264482",
+        "genetic_disease_models": "AR"
+    },
+    "ABCG8": {
+        "hgnc_id": "13887",
+        "transcript": "NM_022437",
+        "genetic_disease_models": "AR"
+    },
+    "CD59": {
+        "hgnc_id": "1689",
+        "transcript": "NM_000611, NM_203331, NM_001127225, NM_001127226, NM_203329, NM_203330, NM_001127227, XM_005253257",
+        "genetic_disease_models": "AR"
+    },
+    "ADD2": {
+        "hgnc_id": "244",
+        "transcript": "NM_001617.3",
+        "genetic_disease_models": ""
+    },
+    "RHCE": {
+        "hgnc_id": "10008",
+        "transcript": "NM_020485",
+        "genetic_disease_models": "AR"
+    },
+    "STOM": {
+        "hgnc_id": "3383",
+        "transcript": "NM_004099.5",
+        "genetic_disease_models": "AR"
+    },
+    "CD47": {
+        "hgnc_id": "1682",
+        "transcript": "NM_001777",
+        "genetic_disease_models": ""
+    },
+    "EPB49/ DMTN": {
+        "hgnc_id": "3382",
+        "transcript": "NM_001978",
+        "genetic_disease_models": ""
+    },
+    "KEL": {
+        "hgnc_id": "6308",
+        "transcript": " NM_000420",
+        "genetic_disease_models": ""
+    },
+    "ABCG2": {
+        "hgnc_id": "74",
+        "transcript": "NM_004827",
+        "genetic_disease_models": ""
+    },
+    "RHD": {
+        "hgnc_id": "10009",
+        "transcript": "NM_001282867, NM_016124",
+        "genetic_disease_models": ""
+    },
+    "XK": {
+        "hgnc_id": "12811",
+        "transcript": "NM_021083.3",
+        "genetic_disease_models": "XL"
+    },
+    "G6PD": {
+        "hgnc_id": "4057",
+        "transcript": "NM_000402.4",
+        "genetic_disease_models": "XLR"
+    },
+    "PKLR": {
+        "hgnc_id": "9020",
+        "transcript": "NM_000298.5",
+        "genetic_disease_models": "AR"
+    },
+    "NT5C3": {
+        "hgnc_id": "17820",
+        "transcript": "NM_001002010.2",
+        "genetic_disease_models": "AR"
+    },
+    "GPI": {
+        "hgnc_id": "4458",
+        "transcript": "NM_001289789.1",
+        "genetic_disease_models": "AR"
+    },
+    "PGK1": {
+        "hgnc_id": "8896",
+        "transcript": "NM_000291.3",
+        "genetic_disease_models": "XLR"
+    },
+    "HK1": {
+        "hgnc_id": "4922",
+        "transcript": "NM_033496.2",
+        "genetic_disease_models": "AR"
+    },
+    "TPI1": {
+        "hgnc_id": "12009",
+        "transcript": "NM_001159287.1",
+        "genetic_disease_models": "AR"
+    },
+    "AK1": {
+        "hgnc_id": "361",
+        "transcript": "NM_000476.2",
+        "genetic_disease_models": "AR"
+    },
+    "GSS": {
+        "hgnc_id": "4624",
+        "transcript": "NM_000178.3",
+        "genetic_disease_models": "AR"
+    },
+    "GCLC": {
+        "hgnc_id": "4311",
+        "transcript": "NM_001498.3",
+        "genetic_disease_models": "AR"
+    },
+    "PFKM": {
+        "hgnc_id": "8877",
+        "transcript": "NM_001166686.1",
+        "genetic_disease_models": "AR"
+    },
+    "PFKL": {
+        "hgnc_id": "8876",
+        "transcript": "NM_002626, NM_001002021",
+        "genetic_disease_models": ""
+    },
+    "ALDOA": {
+        "hgnc_id": "414",
+        "transcript": "NM_000034.3",
+        "genetic_disease_models": "AR"
+    },
+    "ADA": {
+        "hgnc_id": "186",
+        "transcript": " NM_000022",
+        "genetic_disease_models": "AR"
+    },
+    "BPGM": {
+        "hgnc_id": "1093",
+        "transcript": "NM_199186.2",
+        "genetic_disease_models": "AR"
+    },
+    "GPX1": {
+        "hgnc_id": "4553",
+        "transcript": "NM_000581.3",
+        "genetic_disease_models": "AR"
+    },
+    "PGLS": {
+        "hgnc_id": "8903",
+        "transcript": "NM_012088",
+        "genetic_disease_models": ""
+    },
+    "GSR": {
+        "hgnc_id": "4623",
+        "transcript": "NM_000637.3",
+        "genetic_disease_models": "AR"
+    },
+    "PRDX1": {
+        "hgnc_id": "9352",
+        "transcript": "NM_18167",
+        "genetic_disease_models": ""
+    },
+    "GSTP1": {
+        "hgnc_id": "4638",
+        "transcript": "NM_000852",
+        "genetic_disease_models": ""
+    },
+    "HMOX1": {
+        "hgnc_id": "5013",
+        "transcript": "NM_002133",
+        "genetic_disease_models": "?AR"
+    },
+    "PGD": {
+        "hgnc_id": "8891",
+        "transcript": "NM_002631.3",
+        "genetic_disease_models": "AD"
+    },
+    "CDAN1": {
+        "hgnc_id": "1713",
+        "transcript": "NM_138477.2",
+        "genetic_disease_models": ""
+    },
+    "C15orf41": {
+        "hgnc_id": "26929",
+        "transcript": "NM_001130010.2",
+        "genetic_disease_models": ""
+    },
+    "SEC23B": {
+        "hgnc_id": "10702",
+        "transcript": "NM_032985.4",
+        "genetic_disease_models": ""
+    },
+    "KIF23": {
+        "hgnc_id": "6392",
+        "transcript": "NM_138555.3",
+        "genetic_disease_models": ""
+    },
+    "KLF1": {
+        "hgnc_id": "6345",
+        "transcript": "NM_006563.4",
+        "genetic_disease_models": ""
+    },
+    "GATA1": {
+        "hgnc_id": "4170",
+        "transcript": "NM_002049.3",
+        "genetic_disease_models": "XLR"
+    },
+    "UGT1A1": {
+        "hgnc_id": "12530",
+        "transcript": "NM_000463",
+        "genetic_disease_models": "AR"
+    },
+    "MTRR": {
+        "hgnc_id": "7473",
+        "transcript": "NM_024010.2",
+        "genetic_disease_models": "AR"
+    },
+    "SLCO1B1": {
+        "hgnc_id": "",
+        "transcript": "",
+        "genetic_disease_models": ""
+    },
+    "": {
+        "hgnc_id": "Hemoglobinopatier",
+        "transcript": "",
+        "genetic_disease_models": ""
+    },
+    "LPIN2": {
+        "hgnc_id": "14450",
+        "transcript": "NM_014646.2",
+        "genetic_disease_models": ""
+    },
+    "HBB": {
+        "hgnc_id": "",
+        "transcript": "",
+        "genetic_disease_models": ""
+    },
+    "HBA1": {
+        "hgnc_id": "",
+        "transcript": "",
+        "genetic_disease_models": ""
+    },
+    "HbA2": {
+        "hgnc_id": "",
+        "transcript": "",
+        "genetic_disease_models": ""
+    }
+}

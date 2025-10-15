@@ -1,0 +1,57 @@
+import unittest
+import os
+from generate_document import generate_document
+from docx import Document
+
+class TestGenerateDocument(unittest.TestCase):
+    def setUp(self):
+        # Skapa en testdata
+        self.test_data = {
+            'LID-NR': 'test123',
+            'Proband': 'Proband1',
+            'Genotype': 'Genotype1',
+            'Phenotype': 'Phenotype1',
+            'Sequencing method': 'mps',
+            'Exon': 'Exon1',
+            'variants': [
+                {
+                    'Gene': 'f8',
+                    'Transcript': 'NM_000132',
+                    'Disease': 'Hemofili A',
+                    'Nucleotide change': 'c.1234A>G',
+                    'Protein change': 'p.Tyr412Cys',
+                    'Zygosity': 'Hemizygot',
+                    'Inheritance': 'Autosomalt dominant',
+                    'ACMG criteria assessment': 'Patogen',
+                    'ClinVar and hemophilia database reports': 'ClinVar data',
+                    'Further studies': 'ja'
+                }
+            ]
+        }
+        self.output_path = 'test_output'
+        os.makedirs(self.output_path, exist_ok=True)
+    
+    def tearDown(self):
+        # Rensa testdokumentet efter testet
+        file_path = os.path.join(self.output_path, 'genetisk_rapport.docx')
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    
+    def test_generate_document(self):
+        generate_document(self.test_data, self.output_path)
+        file_path = os.path.join(self.output_path, 'genetisk_rapport.docx')
+        self.assertTrue(os.path.exists(file_path))
+
+        # Kontrollera innehållet i det genererade dokumentet
+        doc = Document(file_path)
+        paragraphs = [p.text.strip() for p in doc.paragraphs]
+        self.assertIn('test123 -- F8', paragraphs)
+        self.assertIn('Genetisk Variant 1:', paragraphs)
+        self.assertIn('F8 (NM_000132): c. c.1234A>G p. p.Tyr412Cys Hemizygot.', paragraphs)
+        self.assertIn('Det är troligt att varianten orsakar Hemofili A.', paragraphs)
+        self.assertIn('Nedärvning: Autosomalt dominant.', paragraphs)
+        self.assertIn('Bedömning enligt ACMG-kriterierna: Patogen.', paragraphs)
+        self.assertIn('Tidigare rapporter i ClinVar och hemofilidatabaserna: ClinVar data.', paragraphs)
+
+if __name__ == '__main__':
+    unittest.main()
