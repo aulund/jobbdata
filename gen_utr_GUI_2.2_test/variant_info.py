@@ -5,6 +5,21 @@ import logging
 from generate_document import generate_document
 import config
 
+# Import export and database modules
+try:
+    from export import export_to_excel, export_to_pdf, is_excel_available, is_pdf_available
+    EXPORT_AVAILABLE = True
+except ImportError:
+    EXPORT_AVAILABLE = False
+    logger.warning("Export module not available")
+
+try:
+    from database import VariantDatabase
+    DATABASE_AVAILABLE = True
+except ImportError:
+    DATABASE_AVAILABLE = False
+    logger.warning("Database module not available")
+
 logger = logging.getLogger(__name__)
 
 
@@ -119,14 +134,49 @@ class VariantInfoCollector:
 
         self.button_submit = ttk.Button(self.frame, text="Avsluta och generera rapport", command=self.submit_all)
         self.button_submit.grid(column=1, row=13, padx=10, pady=5)
+        
+        # Export options
+        export_frame = ttk.LabelFrame(self.frame, text="Export alternativ")
+        export_frame.grid(column=0, row=14, columnspan=2, padx=10, pady=10, sticky="ew")
+        
+        self.export_excel_var = tk.BooleanVar(value=False)
+        self.export_pdf_var = tk.BooleanVar(value=False)
+        self.save_to_db_var = tk.BooleanVar(value=True)
+        
+        excel_available = EXPORT_AVAILABLE and is_excel_available()
+        pdf_available = EXPORT_AVAILABLE and is_pdf_available()
+        
+        self.check_excel = ttk.Checkbutton(
+            export_frame, 
+            text="Exportera till Excel", 
+            variable=self.export_excel_var,
+            state="normal" if excel_available else "disabled"
+        )
+        self.check_excel.grid(column=0, row=0, padx=10, pady=5, sticky="w")
+        
+        self.check_pdf = ttk.Checkbutton(
+            export_frame, 
+            text="Konvertera till PDF", 
+            variable=self.export_pdf_var,
+            state="normal" if pdf_available else "disabled"
+        )
+        self.check_pdf.grid(column=0, row=1, padx=10, pady=5, sticky="w")
+        
+        self.check_db = ttk.Checkbutton(
+            export_frame, 
+            text="Spara i databas", 
+            variable=self.save_to_db_var,
+            state="normal" if DATABASE_AVAILABLE else "disabled"
+        )
+        self.check_db.grid(column=0, row=2, padx=10, pady=5, sticky="w")
 
         # Ny knapp: normalfynd
         self.button_normal = ttk.Button(self.frame, text="Generera normalfynd", command=self.generate_normal_finding)
-        self.button_normal.grid(column=0, row=14, columnspan=2, padx=10, pady=5)
+        self.button_normal.grid(column=0, row=15, columnspan=2, padx=10, pady=5)
 
         # Tillbaka-knapp
         self.button_back = ttk.Button(self.frame, text="Tillbaka", command=self.show_previous_step)
-        self.button_back.grid(column=0, row=15, columnspan=2, padx=10, pady=5)
+        self.button_back.grid(column=0, row=16, columnspan=2, padx=10, pady=5)
 
 
     def update_genes(self, event):
@@ -265,7 +315,39 @@ class VariantInfoCollector:
         output_file = generate_document(self.data, output_directory)
         
         if output_file:
-            messagebox.showinfo("Success", f"Rapporten har genererats:\n{output_file}")
+            success_msg = f"Rapporten har genererats:\n{output_file}"
+            
+            # Handle Excel export
+            if self.export_excel_var.get() and EXPORT_AVAILABLE:
+                excel_file = export_to_excel(self.data, output_directory)
+                if excel_file:
+                    success_msg += f"\n\nExcel: {excel_file}"
+                    logger.info(f"Excel export successful: {excel_file}")
+                else:
+                    logger.warning("Excel export failed")
+            
+            # Handle PDF export
+            if self.export_pdf_var.get() and EXPORT_AVAILABLE:
+                pdf_file = export_to_pdf(output_file)
+                if pdf_file:
+                    success_msg += f"\n\nPDF: {pdf_file}"
+                    logger.info(f"PDF export successful: {pdf_file}")
+                else:
+                    logger.warning("PDF export failed")
+            
+            # Handle database save
+            if self.save_to_db_var.get() and DATABASE_AVAILABLE:
+                try:
+                    db = VariantDatabase()
+                    saved_ids = db.save_variant_data(self.data)
+                    if saved_ids:
+                        success_msg += f"\n\nSparat i databas (IDs: {', '.join(map(str, saved_ids))})"
+                        logger.info(f"Saved to database with IDs: {saved_ids}")
+                    db.close()
+                except Exception as e:
+                    logger.error(f"Database save failed: {e}")
+            
+            messagebox.showinfo("Success", success_msg)
             self.submit_data(self.data)
         else:
             messagebox.showerror("Fel", "Ett fel uppstod vid generering av rapporten. Se loggen för detaljer.")
@@ -313,7 +395,35 @@ class VariantInfoCollector:
         output_file = generate_document(self.data, output_directory)
         
         if output_file:
-            messagebox.showinfo("Success", f"Normalfynd har genererats:\n{output_file}")
+            success_msg = f"Normalfynd har genererats:\n{output_file}"
+            
+            # Handle Excel export
+            if self.export_excel_var.get() and EXPORT_AVAILABLE:
+                excel_file = export_to_excel(self.data, output_directory)
+                if excel_file:
+                    success_msg += f"\n\nExcel: {excel_file}"
+                    logger.info(f"Excel export successful: {excel_file}")
+            
+            # Handle PDF export
+            if self.export_pdf_var.get() and EXPORT_AVAILABLE:
+                pdf_file = export_to_pdf(output_file)
+                if pdf_file:
+                    success_msg += f"\n\nPDF: {pdf_file}"
+                    logger.info(f"PDF export successful: {pdf_file}")
+            
+            # Handle database save
+            if self.save_to_db_var.get() and DATABASE_AVAILABLE:
+                try:
+                    db = VariantDatabase()
+                    saved_ids = db.save_variant_data(self.data)
+                    if saved_ids:
+                        success_msg += f"\n\nSparat i databas (IDs: {', '.join(map(str, saved_ids))})"
+                        logger.info(f"Saved to database with IDs: {saved_ids}")
+                    db.close()
+                except Exception as e:
+                    logger.error(f"Database save failed: {e}")
+            
+            messagebox.showinfo("Success", success_msg)
             self.submit_data(self.data)
         else:
             messagebox.showerror("Fel", "Ett fel uppstod vid generering av normalfynd. Se loggen för detaljer.")

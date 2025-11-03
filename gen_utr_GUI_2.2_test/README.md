@@ -1,4 +1,4 @@
-# Genetisk Variant Datainsamling - Version 2.3
+# Genetisk Variant Datainsamling - Version 2.4
 
 Detta är en GUI-applikation för insamling av genetisk variantdata och generering av rapporter.
 
@@ -8,8 +8,24 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 - Registrering av variantinformation (gen, nukleotid-/proteinförändringar, zygositet, ACMG-klassificering)
 - **Varianthantering**: Visa, ta bort och hantera tillagda varianter innan generering
 - **HGVS-formathjälp**: Inbyggda formatanvisningar för nukleotid- och proteinförändringar
+- **Excel-export**: Exportera variantdata till Excel-format (.xlsx)
+- **PDF-export**: Konvertera Word-dokument till PDF-format
+- **Databaslagring**: Spara varianter i SQLite-databas för historik och analys
 - Automatisk generering av Word-dokument med rapporter
 - Stöd för normalfynd (inga varianter påvisade)
+
+## Förbättringar i version 2.4
+
+### Nya funktioner
+- **Excel-export**: Exportera alla variantdata till strukturerad Excel-fil med formatering
+- **PDF-konvertering**: Automatisk konvertering av Word-dokument till PDF
+- **Databas-integration**: 
+  - SQLite-databas för persistent lagring
+  - Automatisk databasskapa vid första körning
+  - Lagrar all variantinformation med tidsstämpel
+  - Möjlighet att söka historiska data per LID-NR eller gen
+- **Export-alternativ**: Checkboxar i GUI för att välja exportformat
+- **requirements.txt**: Specificerade beroenden för enkel installation
 
 ## Förbättringar i version 2.3
 
@@ -53,27 +69,67 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 
 - **Visa varianter**: Alla tillagda varianter visas i listan "Tillagda varianter"
 - **Ta bort variant**: Välj en variant i listan och klicka "Ta bort vald variant"
+- **Välj export-alternativ**: Kryssa i önskade exportformat (Excel, PDF, Databas)
 - **Generera rapport**: När alla varianter är tillagda, klicka "Avsluta och generera rapport"
+
+### Exportalternativ
+
+- **Exportera till Excel**: Skapa en strukturerad Excel-fil (.xlsx) med alla variantdata
+- **Konvertera till PDF**: Konvertera Word-dokumentet automatiskt till PDF-format
+- **Spara i databas**: Lagra variantdata i lokal SQLite-databas för framtida analys
 
 ### Normalfynd
 
 För prover utan patogena varianter:
 1. Välj gen
-2. Klicka "Generera normalfynd"
+2. Välj önskade export-alternativ
+3. Klicka "Generera normalfynd"
 
 ## Installation
 
 ### Beroenden
 
+**Grundläggande:**
 ```bash
 pip install python-docx pillow
 ```
+
+**Med alla export-funktioner (v2.4):**
+```bash
+pip install -r requirements.txt
+```
+
+Detta installerar:
+- python-docx (Word-dokument)
+- Pillow (bildhantering)
+- openpyxl (Excel-export)
+- docx2pdf (PDF-konvertering)
+- sqlalchemy (databas)
+
+**OBS:** PDF-export kräver Microsoft Word installerat på Windows. På andra plattformar kan alternativa lösningar användas.
 
 ### Körning
 
 ```bash
 python main.py
 ```
+
+## Databas
+
+Applikationen skapar automatiskt en SQLite-databas (`variants.db`) vid första användningen om "Spara i databas" är aktiverat.
+
+### Databasstruktur
+
+- **Tabell**: `variants`
+- **Lagrar**: LID-NR, gen, nukleotid/proteinförändringar, ACMG-bedömning, patientinformation, tidsstämpel
+- **Användning**: Historisk data, statistik, sökningar
+
+### Söka i databas
+
+Databas-API:et tillhandahåller metoder för att:
+- Hämta alla varianter för ett specifikt LID-NR
+- Hämta alla varianter för en specifik gen
+- Hämta de senaste N varianterna
 
 ## Konfiguration
 
