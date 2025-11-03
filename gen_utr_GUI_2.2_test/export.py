@@ -28,7 +28,7 @@ except ImportError:
 
 def export_to_excel(data, output_path):
     """
-    Export variant data to Excel format.
+    Export variant data to Excel format, appending to collective files by gene group.
     
     Args:
         data: Dictionary containing variant and patient information
@@ -53,34 +53,57 @@ def export_to_excel(data, output_path):
             logger.error(f"Invalid output path: {output_path}")
             return None
         
-        # Create workbook
-        wb = openpyxl.Workbook()
-        ws = wb.active
-        ws.title = "Variant Data"
+        # Ensure output directory exists
+        os.makedirs(output_path, exist_ok=True)
         
-        # Define styles
-        header_font = Font(bold=True, size=12)
-        header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
-        header_alignment = Alignment(horizontal="center", vertical="center")
+        # Determine category and collective filename
+        category = data.get("Category", "Övrigt")
         
-        # Add header row
-        headers = [
-            "LID-NR", "Gene", "Nucleotide Change", "Protein Change", 
-            "Zygosity", "Inheritance", "ACMG Assessment", "ClinVar Info",
-            "Further Studies", "Transcript", "Disease", "Category",
-            "Proband", "Genotype", "Phenotype", "Sequencing Method", "Exon",
-            "Timestamp"
-        ]
+        # Map category to gene group for collective file
+        if category == "Medfodd anemi" or "anemi" in category.lower():
+            collective_filename = "Medfodd_anemi_collective.xlsx"
+        elif category == "Koagulation" or "koagulation" in category.lower():
+            collective_filename = "Koagulation_collective.xlsx"
+        else:
+            collective_filename = "Ovrigt_collective.xlsx"
         
-        for col, header in enumerate(headers, 1):
-            cell = ws.cell(row=1, column=col)
-            cell.value = header
-            cell.font = header_font
-            cell.fill = header_fill
-            cell.alignment = header_alignment
+        collective_path = os.path.join(output_path, collective_filename)
         
-        # Add data rows
-        row = 2
+        # Load existing workbook or create new one
+        if os.path.exists(collective_path):
+            wb = openpyxl.load_workbook(collective_path)
+            ws = wb.active
+            logger.info(f"Appending to existing file: {collective_path}")
+        else:
+            wb = openpyxl.Workbook()
+            ws = wb.active
+            ws.title = "Variant Data"
+            
+            # Define styles
+            header_font = Font(bold=True, size=12)
+            header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
+            header_alignment = Alignment(horizontal="center", vertical="center")
+            
+            # Add header row
+            headers = [
+                "LID-NR", "Gene", "Nucleotide Change", "Protein Change", 
+                "Zygosity", "Inheritance", "ACMG Assessment", "ClinVar Info",
+                "Further Studies", "Transcript", "Disease", "Category",
+                "Proband", "Genotype", "Phenotype", "Sequencing Method", "Exon",
+                "Timestamp"
+            ]
+            
+            for col, header in enumerate(headers, 1):
+                cell = ws.cell(row=1, column=col)
+                cell.value = header
+                cell.font = header_font
+                cell.fill = header_fill
+                cell.alignment = header_alignment
+            
+            logger.info(f"Created new collective file: {collective_path}")
+        
+        # Find next empty row
+        row = ws.max_row + 1
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         if data.get("Normalfynd", False):
@@ -120,35 +143,24 @@ def export_to_excel(data, output_path):
                 ws.cell(row=row, column=18).value = timestamp
                 row += 1
         
-        # Auto-adjust column widths
-        for column in ws.columns:
-            max_length = 0
-            column_letter = column[0].column_letter
-            for cell in column:
-                try:
-                    if cell.value:
-                        max_length = max(max_length, len(str(cell.value)))
-                except:
-                    pass
-            adjusted_width = min(max_length + 2, 50)
-            ws.column_dimensions[column_letter].width = adjusted_width
+        # Auto-adjust column widths (only for new files)
+        if ws.max_row <= 2:  # Only header and first data row
+            for column in ws.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if cell.value:
+                            max_length = max(max_length, len(str(cell.value)))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                ws.column_dimensions[column_letter].width = adjusted_width
         
-        # Ensure output directory exists
-        os.makedirs(output_path, exist_ok=True)
-        
-        # Generate filename
-        lid_nr = data.get("LID-NR", "unknown")
-        if data.get("Normalfynd", False):
-            gene = data.get("Gene", "unknown")
-            filename = f"{lid_nr}_{gene}_normalfynd.xlsx"
-        else:
-            gene = data['variants'][0]['Gene'] if data.get("variants") else "unknown"
-            filename = f"{lid_nr}_{gene}.xlsx"
-        
-        output_file = os.path.join(output_path, filename)
-        wb.save(output_file)
-        logger.info(f"Excel file created: {output_file}")
-        return output_file
+        # Save the collective file
+        wb.save(collective_path)
+        logger.info(f"Excel data appended to collective file: {collective_path}")
+        return collective_path
         
     except Exception as e:
         logger.error(f"Error exporting to Excel: {e}", exc_info=True)

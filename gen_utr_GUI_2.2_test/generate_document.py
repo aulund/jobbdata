@@ -5,10 +5,13 @@ import config
 
 logger = logging.getLogger(__name__)
 
+# Template file name (can be customized)
+TEMPLATE_FILE = "variant_report_template.docx"
+
 
 def generate_document(data, output_path):
     """
-    Generate a Word document with genetic variant information.
+    Generate a Word document with genetic variant information using a template if available.
     
     Args:
         data: Dictionary containing all collected variant and patient information
@@ -42,8 +45,16 @@ def generate_document(data, output_path):
             logger.error("No LID-NR provided in data")
             return None
 
+        # Try to load template, otherwise create blank document
+        template_path = os.path.join(os.path.dirname(__file__), TEMPLATE_FILE)
+        if os.path.exists(template_path):
+            doc = Document(template_path)
+            logger.info(f"Using template: {template_path}")
+        else:
+            doc = Document()
+            logger.info("No template found, creating blank document")
+        
         # Generate variant finding document
-        doc = Document()
         main_heading = f"{data['LID-NR']} -- {data['variants'][0]['Gene'].upper()}"
         doc.add_heading(main_heading, level=1)
 
@@ -90,7 +101,7 @@ def generate_document(data, output_path):
 
 def generate_normalfinding_document(data, output_path):
     """
-    Generate a Word document for normal finding (no variants detected).
+    Generate a Word document for normal finding (no variants detected) using a template if available.
     
     Args:
         data: Dictionary containing gene and patient information
@@ -104,8 +115,15 @@ def generate_normalfinding_document(data, output_path):
         if not output_path or '..' in output_path:
             logger.error(f"Invalid output path: {output_path}")
             return None
-            
-        doc = Document()
+        
+        # Try to load template, otherwise create blank document
+        template_path = os.path.join(os.path.dirname(__file__), TEMPLATE_FILE)
+        if os.path.exists(template_path):
+            doc = Document(template_path)
+            logger.info(f"Using template for normal finding: {template_path}")
+        else:
+            doc = Document()
+            logger.info("No template found for normal finding, creating blank document")
 
         gene = data.get("Gene", "okänd gen")
         lid_nr = data.get("LID-NR", "okänt ID")

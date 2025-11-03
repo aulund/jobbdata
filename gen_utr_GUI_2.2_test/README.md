@@ -1,4 +1,4 @@
-# Genetisk Variant Datainsamling - Version 2.4
+# Genetisk Variant Datainsamling - Version 2.5
 
 Detta är en GUI-applikation för insamling av genetisk variantdata och generering av rapporter.
 
@@ -8,11 +8,26 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 - Registrering av variantinformation (gen, nukleotid-/proteinförändringar, zygositet, ACMG-klassificering)
 - **Varianthantering**: Visa, ta bort och hantera tillagda varianter innan generering
 - **HGVS-formathjälp**: Inbyggda formatanvisningar för nukleotid- och proteinförändringar
-- **Excel-export**: Exportera variantdata till Excel-format (.xlsx)
+- **Excel-export till kollektiva filer**: Exportera och lägg till data till gemensamma Excel-filer uppdelade per genkategori
 - **PDF-export**: Konvertera Word-dokument till PDF-format
 - **Databaslagring**: Spara varianter i SQLite-databas för historik och analys
+- **Dokumentmallar**: Använd anpassade Word-mallar för rapporter
 - Automatisk generering av Word-dokument med rapporter
 - Stöd för normalfynd (inga varianter påvisade)
+
+## Förbättringar i version 2.5
+
+### Nya funktioner
+- **Kollektiva Excel-filer**: Excel-export lägger nu till data till gemensamma filer
+  - En fil per genkategori (Koagulation_collective.xlsx, Medfodd_anemi_collective.xlsx)
+  - Data från alla körningar samlas i samma fil
+  - Automatisk hantering av både nya och befintliga filer
+  
+- **Dokumentmallar**: Stöd för anpassade Word-mallar
+  - Placera `variant_report_template.docx` i programmets mapp
+  - Mallen används för både varianter och normalfynd
+  - Fallback till blank dokument om mall saknas
+  - Se TEMPLATE_INSTRUCTIONS.md för detaljer
 
 ## Förbättringar i version 2.4
 
@@ -74,9 +89,24 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 
 ### Exportalternativ
 
-- **Exportera till Excel**: Skapa en strukturerad Excel-fil (.xlsx) med alla variantdata
+- **Exportera till Excel**: Lägger till variantdata i kollektiva Excel-filer
+  - Data läggs till i: `Koagulation_collective.xlsx` eller `Medfodd_anemi_collective.xlsx`
+  - Automatisk uppdelning baserat på genkategori
+  - Alla analyser samlas i samma fil för enkel överblick
+  
 - **Konvertera till PDF**: Konvertera Word-dokumentet automatiskt till PDF-format
+
 - **Spara i databas**: Lagra variantdata i lokal SQLite-databas för framtida analys
+
+### Word Dokumentmallar
+
+För att använda anpassade mallar:
+1. Skapa en Word-fil med namnet `variant_report_template.docx`
+2. Placera den i samma mapp som programmet
+3. Lägg till logotyp, rubrikstilar, och standardtext
+4. Programmet använder mallen automatiskt
+
+Se `TEMPLATE_INSTRUCTIONS.md` för detaljerad guide.
 
 ### Normalfynd
 
