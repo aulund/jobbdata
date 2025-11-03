@@ -1,30 +1,51 @@
 import os
+import logging
 from docx import Document
+import config
+
+logger = logging.getLogger(__name__)
+
 
 def generate_document(data, output_path):
+    """
+    Generate a Word document with genetic variant information.
+    
+    Args:
+        data: Dictionary containing all collected variant and patient information
+        output_path: Directory path where the document should be saved
+        
+    Returns:
+        str: Path to the generated document, or None if generation failed
+    """
     try:
-        print("Starting report generation...")
+        logger.info("Starting report generation...")
 
         if not data:
-            print("Ingen data att generera dokument från.")
-            return
+            logger.error("No data provided for document generation")
+            return None
 
-        print("Data received:", data)
-
-        # Normalfynd?
+        # Check if this is a normal finding
         if data.get("Normalfynd", False):
-            generate_normalfinding_document(data, output_path)
-            return
+            return generate_normalfinding_document(data, output_path)
 
-        # Fortsätt med variantfynd
+        # Validate required data
+        if not data.get("variants"):
+            logger.error("No variants provided in data")
+            return None
+            
+        if not data.get("LID-NR"):
+            logger.error("No LID-NR provided in data")
+            return None
+
+        # Generate variant finding document
         doc = Document()
         main_heading = f"{data['LID-NR']} -- {data['variants'][0]['Gene'].upper()}"
         doc.add_heading(main_heading, level=1)
 
         doc.add_paragraph("------------------------------")
         for i, variant in enumerate(data['variants'], 1):
-            variant['Transcript'] = variant.get('Transcript', data.get('Transcript', 'N/A'))
-            variant['Disease'] = variant.get('Disease', data.get('Disease', 'N/A'))
+            variant['Transcript'] = variant.get('Transcript', data.get('Transcript', config.DEFAULT_UNKNOWN_VALUE))
+            variant['Disease'] = variant.get('Disease', data.get('Disease', config.DEFAULT_UNKNOWN_VALUE))
             
             variant_info = process_variant_info(variant)
             doc.add_paragraph(f"Genetisk Variant {i}:")
@@ -49,95 +70,163 @@ def generate_document(data, output_path):
         doc.add_paragraph(sender_info)
         doc.add_paragraph("------------------------------")
 
+        # Ensure output directory exists
+        os.makedirs(output_path, exist_ok=True)
+
         filename = f"{data['LID-NR']}_{data['variants'][0]['Gene'].upper()}.docx"
         output_file = os.path.join(output_path, filename)
         doc.save(output_file)
-        print(f"Dokumentet har skapats och sparats som '{output_file}'")
+        logger.info(f"Document successfully created: {output_file}")
+        return output_file
 
     except Exception as e:
-        print(f"An error occurred during report generation: {e}")
+        logger.error(f"Error during report generation: {e}", exc_info=True)
+        return None
 
 def generate_normalfinding_document(data, output_path):
-    doc = Document()
+    """
+    Generate a Word document for normal finding (no variants detected).
+    
+    Args:
+        data: Dictionary containing gene and patient information
+        output_path: Directory path where the document should be saved
+        
+    Returns:
+        str: Path to the generated document, or None if generation failed
+    """
+    try:
+        doc = Document()
 
-    gene = data.get("Gene", "okänd gen")
-    lid_nr = data.get("LID-NR", "okänt ID")
-    transcript = data.get("Transcript", "")
-    sequencing_method = data.get("Sequencing method", "okänd metod")
-    category = data.get("Category", "okänd kategori")
+        gene = data.get("Gene", "okänd gen")
+        lid_nr = data.get("LID-NR", "okänt ID")
+        transcript = data.get("Transcript", "")
+        sequencing_method = data.get("Sequencing method", "okänd metod")
 
-    main_heading = f"{lid_nr} -- {gene.upper()}"
-    doc.add_heading(main_heading, level=1)
+        main_heading = f"{lid_nr} -- {gene.upper()}"
+        doc.add_heading(main_heading, level=1)
 
-    doc.add_paragraph("------------------------------")
-    doc.add_paragraph("Normalt Fynd:")
-    doc.add_paragraph(
-        f"Vid genetisk analys av genen {gene} ({transcript}) med metoden {sequencing_method} "
-        f"påvisades inga avvikelser av möjlig klinisk betydelse."
-    )
-    doc.add_paragraph("------------------------------")
+        doc.add_paragraph("------------------------------")
+        doc.add_paragraph("Normalt Fynd:")
+        
+        normal_text = config.NORMAL_FINDING_TEXT.format(
+            gene=gene,
+            transcript=transcript,
+            method=sequencing_method
+        )
+        doc.add_paragraph(normal_text)
+        doc.add_paragraph("------------------------------")
 
-    genomic_info = process_genomic_analysis_info(data)
-    doc.add_paragraph("Genomisk Analys:")
-    doc.add_paragraph(genomic_info)
-    doc.add_paragraph("------------------------------")
+        genomic_info = process_genomic_analysis_info(data)
+        doc.add_paragraph("Genomisk Analys:")
+        doc.add_paragraph(genomic_info)
+        doc.add_paragraph("------------------------------")
 
-    sender_info = get_sender_info()
-    doc.add_paragraph("Avsändare:")
-    doc.add_paragraph(sender_info)
-    doc.add_paragraph("------------------------------")
+        sender_info = get_sender_info()
+        doc.add_paragraph("Avsändare:")
+        doc.add_paragraph(sender_info)
+        doc.add_paragraph("------------------------------")
 
-    filename = f"{lid_nr}_{gene.upper()}_normalfynd.docx"
-    output_file = os.path.join(output_path, filename)
-    doc.save(output_file)
-    print(f"Normalfyndsdokument har skapats och sparats som '{output_file}'")
+        # Ensure output directory exists
+        os.makedirs(output_path, exist_ok=True)
+
+        filename = f"{lid_nr}_{gene.upper()}_normalfynd.docx"
+        output_file = os.path.join(output_path, filename)
+        doc.save(output_file)
+        logger.info(f"Normal finding document created: {output_file}")
+        return output_file
+        
+    except Exception as e:
+        logger.error(f"Error generating normal finding document: {e}", exc_info=True)
+        return None
 
 def process_variant_info(variant):
-    gene = variant.get('Gene', 'N/A')
-    transcript = variant.get('Transcript', 'N/A')
-    nucleotide_change = variant.get('Nucleotide change', 'N/A').strip()
-    protein_change = variant.get('Protein change', 'N/A').strip()
-    zygosity = variant.get('Zygosity', 'N/A')
-    inheritance = variant.get('Inheritance', 'N/A')
-    disease = variant.get('Disease', 'N/A')
+    """
+    Process variant information into formatted text.
+    
+    Args:
+        variant: Dictionary containing variant details
+        
+    Returns:
+        str: Formatted variant information
+    """
+    gene = variant.get('Gene', config.DEFAULT_UNKNOWN_VALUE)
+    transcript = variant.get('Transcript', config.DEFAULT_UNKNOWN_VALUE)
+    nucleotide_change = variant.get('Nucleotide change', config.DEFAULT_UNKNOWN_VALUE).strip()
+    protein_change = variant.get('Protein change', config.DEFAULT_UNKNOWN_VALUE).strip()
+    zygosity = variant.get('Zygosity', config.DEFAULT_UNKNOWN_VALUE)
+    inheritance = variant.get('Inheritance', config.DEFAULT_UNKNOWN_VALUE)
+    disease = variant.get('Disease', config.DEFAULT_UNKNOWN_VALUE)
     
     info = (f"{gene} ({transcript}): c.{nucleotide_change} p.{protein_change} {zygosity}.\n"
             f"Det är troligt att varianten orsakar {disease}.\n"
             f"Nedärvning: {inheritance}.")
     return info
 
+
 def process_assessment_info(variant):
-    acmg = variant.get('ACMG criteria assessment', 'N/A')
-    clinvar = variant.get('ClinVar and hemophilia database reports', 'N/A')
+    """
+    Process ACMG assessment and ClinVar information.
+    
+    Args:
+        variant: Dictionary containing assessment details
+        
+    Returns:
+        str: Formatted assessment information
+    """
+    acmg = variant.get('ACMG criteria assessment', config.DEFAULT_UNKNOWN_VALUE)
+    clinvar = variant.get('ClinVar and hemophilia database reports', config.DEFAULT_UNKNOWN_VALUE)
     
     info = (f"Bedömning enligt ACMG-kriterierna: {acmg}.\n"
             f"Sammanfattning och utlåtande: {clinvar}.")
     return info
 
+
 def process_proband_info(data):
-    proband = data.get('Proband', 'N/A')
-    genotype = data.get('Genotype', 'N/A')
-    phenotype = data.get('Phenotype', 'N/A')
+    """
+    Process proband information.
+    
+    Args:
+        data: Dictionary containing proband details
+        
+    Returns:
+        str: Formatted proband information
+    """
+    proband = data.get('Proband', config.DEFAULT_UNKNOWN_VALUE)
+    genotype = data.get('Genotype', config.DEFAULT_UNKNOWN_VALUE)
+    phenotype = data.get('Phenotype', config.DEFAULT_UNKNOWN_VALUE)
 
     info = f"{proband}\n"
-    if proband != 'N/A':
+    if proband != config.DEFAULT_UNKNOWN_VALUE and proband != config.DEFAULT_UNKNOWN_PROBAND:
         info += (f"Genotyp: {genotype}\n"
                  f"Fenotyp: {phenotype}")
     return info
 
+
 def process_genomic_analysis_info(data):
-    sequencing_method = data.get('Sequencing method', 'N/A').strip().lower()
-    exon = data.get('Exon', 'N/A')
+    """
+    Process genomic analysis information based on sequencing method.
+    
+    Args:
+        data: Dictionary containing sequencing method and other details
+        
+    Returns:
+        str: Formatted genomic analysis information
+    """
+    sequencing_method = data.get('Sequencing method', config.DEFAULT_UNKNOWN_VALUE).strip().lower()
+    exon = data.get('Exon', '')
+    gene = data.get('Gene', 'genen')
 
     if sequencing_method == 'sanger':
-        return f"Exon {exon} av {data.get('Gene', 'genen')} har analyserats med Sangersekvensering."
+        return config.GENOMIC_ANALYSIS_SANGER.format(exon=exon, gene=gene)
     else:
-        return (
-            "Alla kodande regioner med flankerande icke-kodande sekvenser har analyserats med MPS. "
-            "Sekvensdata har mappats mot referenssekvens (GRCh37/hg19). "
-            "Analysen innefattar endast exon och exon-intron-gränser och därför ingår inte "
-            "promotor-, intron- och icke-kodande-regioner i analysen."
-        )
+        return config.GENOMIC_ANALYSIS_MPS
+
 
 def get_sender_info():
-    return "MVH August Lundholm, Molekylärbiolog"
+    """
+    Get sender information for the document.
+    
+    Returns:
+        str: Sender information
+    """
+    return config.SENDER_INFO

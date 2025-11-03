@@ -1,7 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import logging
 from generate_document import generate_document
+import config
+
+logger = logging.getLogger(__name__)
+
 
 class VariantInfoCollector:
     def __init__(self, root, general_info, gene_data, acmg_translation, zygosity_translation, inheritance_translation, submit_data, show_general_info_step):
@@ -72,7 +77,7 @@ class VariantInfoCollector:
 
         self.label_further_studies = ttk.Label(variant_frame, text="Är varianten intressant för vidare studier?")
         self.label_further_studies.grid(column=0, row=8, padx=10, pady=5)
-        self.combo_further_studies = ttk.Combobox(variant_frame, values=["ja", "nej"], state="readonly")
+        self.combo_further_studies = ttk.Combobox(variant_frame, values=config.YES_NO_OPTIONS, state="readonly")
         self.combo_further_studies.grid(column=1, row=8, padx=10, pady=5)
 
         # Labels to display the autofilled transcript and disease
@@ -108,11 +113,12 @@ class VariantInfoCollector:
         self.combo_gene['values'] = genes
 
     def autofill_gene_data(self, event):
+        """Autofill transcript and disease information when a gene is selected."""
         gene = self.combo_gene.get()
         gene_info = self.gene_data[self.combo_gene_category.get()].get(gene, {})
 
-        transcript = gene_info.get('Transcript', 'N/A')
-        disease = gene_info.get('Disease', 'N/A')
+        transcript = gene_info.get('Transcript', config.DEFAULT_UNKNOWN_VALUE)
+        disease = gene_info.get('Disease', config.DEFAULT_UNKNOWN_VALUE)
         kategori = gene_info.get('Category', 'Övrigt')
 
         self.transcript_var.set(transcript)
@@ -120,19 +126,43 @@ class VariantInfoCollector:
 
         self.data['Transcript'] = transcript
         self.data['Disease'] = disease
-        self.data['Category'] = kategori  # ← Lägg till kategorin här
+        self.data['Category'] = kategori
+        
+        logger.info(f"Autofilled data for gene {gene}: {transcript}, {disease}")
 
 
     def add_variant(self):
+        """Add a variant to the list after validation."""
+        # Validate required fields
+        if not self.combo_gene.get():
+            messagebox.showerror("Fel", "Välj en gen")
+            return
+            
         gene = self.combo_gene.get()
         if gene not in self.gene_data[self.combo_gene_category.get()]:
             messagebox.showerror("Fel", "Okänd gen. Kontrollera genens kortnamn och försök igen.")
             return
+        
+        if not self.entry_nucleotide_change.get().strip():
+            messagebox.showerror("Fel", "Ange nukleotidförändring")
+            return
+            
+        if not self.entry_protein_change.get().strip():
+            messagebox.showerror("Fel", "Ange proteinförändring")
+            return
+            
+        if not self.combo_zygosity.get():
+            messagebox.showerror("Fel", "Välj zygositet")
+            return
+            
+        if not self.combo_acmg.get():
+            messagebox.showerror("Fel", "Välj ACMG-bedömning")
+            return
 
         variant = {
             "Gene": gene,
-            "Nucleotide change": self.entry_nucleotide_change.get(),
-            "Protein change": self.entry_protein_change.get(),
+            "Nucleotide change": self.entry_nucleotide_change.get().strip(),
+            "Protein change": self.entry_protein_change.get().strip(),
             "Zygosity": self.combo_zygosity.get(),
             "Inheritance": self.combo_inheritance.get(),
             "ACMG criteria assessment": self.combo_acmg.get(),
@@ -140,39 +170,38 @@ class VariantInfoCollector:
             "Further studies": self.combo_further_studies.get()
         }
         self.data["variants"].append(variant)
-        messagebox.showinfo("Info", "Varianten har lagts till.")
-        print(self.data)  # Kontrollera att varianten lagts till korrekt
+        
+        logger.info(f"Added variant for gene {gene}")
+        messagebox.showinfo("Info", f"Varianten har lagts till. Totalt {len(self.data['variants'])} variant(er).")
 
     def submit_all(self):
+        """Submit all collected data and generate the document."""
         if not self.data["variants"]:
             messagebox.showerror("Fel", "Du måste lägga till minst en variant innan du skickar in.")
             return
 
-        self.data["LID-NR"] = self.general_info.get("LID-NR", "N/A")
-        self.data["Proband"] = self.general_info.get("Proband", "N/A")
-        self.data["Genotype"] = self.general_info.get("Genotype", "N/A")
-        self.data["Phenotype"] = self.general_info.get("Phenotype", "N/A")
-        self.data["Sequencing method"] = self.general_info.get("Sequencing method", "N/A")
-        self.data["Exon"] = self.general_info.get("Exon", "N/A")
+        # Merge general info with variant data
+        self.data["LID-NR"] = self.general_info.get("LID-NR", config.DEFAULT_UNKNOWN_VALUE)
+        self.data["Proband"] = self.general_info.get("Proband", config.DEFAULT_UNKNOWN_VALUE)
+        self.data["Genotype"] = self.general_info.get("Genotype", config.DEFAULT_UNKNOWN_VALUE)
+        self.data["Phenotype"] = self.general_info.get("Phenotype", config.DEFAULT_UNKNOWN_VALUE)
+        self.data["Sequencing method"] = self.general_info.get("Sequencing method", config.DEFAULT_UNKNOWN_VALUE)
+        self.data["Exon"] = self.general_info.get("Exon", "")
 
-        # Bestäm output-directory beroende på kategori
+        # Determine output directory based on category
         kategori = self.data.get("Category", "Övrigt")
+        output_directory = config.OUTPUT_PATHS.get(kategori, config.OUTPUT_PATHS["Övrigt"])
 
-        output_paths = {
-            "Medfodd anemi": r"U:\DNA_Sekvenseringsresultat\Remissvar Medfödd anemi\väntande på att svaras ut",
-            "Koagulation": r"U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut",
-            "Övrigt": r"U:\DNA_Sekvenseringsresultat\Remissvar Övrigt\väntande på att svaras ut"
-            }
-
-        output_directory = output_paths.get(kategori, output_paths["Övrigt"])
-
-        # Skapa katalog om den inte finns
-        import os
-        if not os.path.exists(output_directory):
-            os.makedirs(output_directory)
-
-        generate_document(self.data, output_directory)
-        self.submit_data(self.data)
+        logger.info(f"Generating document for category: {kategori}")
+        
+        # Generate document
+        output_file = generate_document(self.data, output_directory)
+        
+        if output_file:
+            messagebox.showinfo("Success", f"Rapporten har genererats:\n{output_file}")
+            self.submit_data(self.data)
+        else:
+            messagebox.showerror("Fel", "Ett fel uppstod vid generering av rapporten. Se loggen för detaljer.")
 
 
 
@@ -182,14 +211,15 @@ class VariantInfoCollector:
         self.show_general_info_step()
 
     def generate_normal_finding(self):
+        """Generate a document for normal finding (no variants detected)."""
         gene = self.combo_gene.get()
         if not gene:
             messagebox.showerror("Fel", "Välj en gen först.")
             return
 
         gene_info = self.gene_data[self.combo_gene_category.get()].get(gene, {})
-        transcript = gene_info.get('Transcript', 'N/A')
-        disease = gene_info.get('Disease', 'N/A')
+        transcript = gene_info.get('Transcript', config.DEFAULT_UNKNOWN_VALUE)
+        disease = gene_info.get('Disease', config.DEFAULT_UNKNOWN_VALUE)
         category = gene_info.get('Category', 'Övrigt')
 
         self.data = {
@@ -199,34 +229,24 @@ class VariantInfoCollector:
             "Category": category,
             "Gene": gene,
             "Normalfynd": True,
-            "LID-NR": self.general_info.get("LID-NR", "N/A"),
-            "Proband": self.general_info.get("Proband", "N/A"),
-            "Genotype": self.general_info.get("Genotype", "N/A"),
-            "Phenotype": self.general_info.get("Phenotype", "N/A"),
-            "Sequencing method": self.general_info.get("Sequencing method", "N/A"),
-            "Exon": self.general_info.get("Exon", "N/A")
+            "LID-NR": self.general_info.get("LID-NR", config.DEFAULT_UNKNOWN_VALUE),
+            "Proband": self.general_info.get("Proband", config.DEFAULT_UNKNOWN_VALUE),
+            "Genotype": self.general_info.get("Genotype", config.DEFAULT_UNKNOWN_VALUE),
+            "Phenotype": self.general_info.get("Phenotype", config.DEFAULT_UNKNOWN_VALUE),
+            "Sequencing method": self.general_info.get("Sequencing method", config.DEFAULT_UNKNOWN_VALUE),
+            "Exon": self.general_info.get("Exon", "")
         }
 
-        # Kategori → mapp
-        category_map = {
-            "Medfodd anemi": "Hemolys",
-            "Koagulation": "Koagulation"
-        }
-        mapped_category = category_map.get(category, "Övrigt")
+        # Map category to output directory
+        mapped_category = config.CATEGORY_MAPPING.get(category, "Övrigt")
+        output_directory = config.NORMAL_FINDING_PATHS.get(mapped_category, config.NORMAL_FINDING_PATHS["Övrigt"])
 
-        output_paths = {
-            "Hemolys": r"U:\DNA_Sekvenseringsresultat\Remissvar Hemolys",
-            "Koagulation": r"U:\DNA_Sekvenseringsresultat\Remissvar Koagulation",
-            "Övrigt": r"U:\DNA_Sekvenseringsresultat\Remissvar Övrigt"
-        }
-
-        output_directory = output_paths[mapped_category]
-
-        import os
-        if not os.path.exists(output_directory):
-            os.makedirs(output_directory)
-
-        print(f"Genererar normalfynd för {gene} → {output_directory}")
-        generate_document(self.data, output_directory)
-
-        self.submit_data(self.data)
+        logger.info(f"Generating normal finding for {gene} in category {mapped_category}")
+        
+        output_file = generate_document(self.data, output_directory)
+        
+        if output_file:
+            messagebox.showinfo("Success", f"Normalfynd har genererats:\n{output_file}")
+            self.submit_data(self.data)
+        else:
+            messagebox.showerror("Fel", "Ett fel uppstod vid generering av normalfynd. Se loggen för detaljer.")
