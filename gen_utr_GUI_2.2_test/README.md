@@ -1,4 +1,4 @@
-# Genetisk Variant Datainsamling - Version 2.2
+# Genetisk Variant Datainsamling - Version 2.3
 
 Detta är en GUI-applikation för insamling av genetisk variantdata och generering av rapporter.
 
@@ -6,8 +6,18 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 
 - Insamling av allmän patientinformation (LID-NR, proband, sekvenseringsmetod)
 - Registrering av variantinformation (gen, nukleotid-/proteinförändringar, zygositet, ACMG-klassificering)
+- **Varianthantering**: Visa, ta bort och hantera tillagda varianter innan generering
+- **HGVS-formathjälp**: Inbyggda formatanvisningar för nukleotid- och proteinförändringar
 - Automatisk generering av Word-dokument med rapporter
 - Stöd för normalfynd (inga varianter påvisade)
+
+## Förbättringar i version 2.3
+
+### Nya funktioner
+- **Variantlista**: Visar alla tillagda varianter i en lista
+- **Ta bort varianter**: Möjlighet att ta bort varianter innan rapportgenerering
+- **Automatisk fältrensning**: Formuläret rensas efter att en variant läggs till
+- **HGVS-formathjälp**: Visar formatexempel för nukleotid (123A>G) och protein (Arg123Cys) ändringar
 
 ## Förbättringar i version 2.2
 
@@ -27,6 +37,29 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 - **Bättre feedback**: Mer informativa felmeddelanden och bekräftelser
 - **Robusthet**: Applikationen hanterar saknade bilder och konfigurationer graciöst
 - **Statusuppdateringar**: Tydligare information om antal tillagda varianter
+
+## Användning
+
+### Lägga till varianter
+
+1. Välj genkategori och gen
+2. Fyll i nukleotidförändring (format: 123A>G eller 456del)
+3. Fyll i proteinförändring (format: Arg123Cys eller Leu456del)
+4. Välj zygositet, nedärvning och ACMG-bedömning
+5. Klicka "Lägg till variant"
+6. Varianten visas i listan nedan
+
+### Hantera varianter
+
+- **Visa varianter**: Alla tillagda varianter visas i listan "Tillagda varianter"
+- **Ta bort variant**: Välj en variant i listan och klicka "Ta bort vald variant"
+- **Generera rapport**: När alla varianter är tillagda, klicka "Avsluta och generera rapport"
+
+### Normalfynd
+
+För prover utan patogena varianter:
+1. Välj gen
+2. Klicka "Generera normalfynd"
 
 ## Installation
 
@@ -75,8 +108,8 @@ Applikationen skapar en loggfil `app.log` som innehåller detaljerad information
 ## Nästa steg
 
 Möjliga framtida förbättringar:
-- Möjlighet att redigera/ta bort varianter efter tillägg
 - Förhandsgranskning av rapport innan generering
 - Export till andra format (PDF, Excel)
 - Databaslagring av varianter
 - Enhetstester
+- Strikt HGVS-validering med reguljära uttryck

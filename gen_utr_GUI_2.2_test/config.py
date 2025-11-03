@@ -7,7 +7,7 @@ import os
 
 # Application settings
 APP_TITLE = "Genetisk Variant Datainsamling"
-APP_VERSION = "2.2"
+APP_VERSION = "2.3"
 
 # Output directory configuration
 # These paths are configurable and can be overridden by environment variables

@@ -47,15 +47,19 @@ class VariantInfoCollector:
 
         self.label_nucleotide_change = ttk.Label(variant_frame, text="Specifik nukleotidförändring:")
         self.label_nucleotide_change.grid(column=0, row=2, padx=10, pady=5)
-        self.entry_nucleotide_change = ttk.Entry(variant_frame)
+        self.entry_nucleotide_change = ttk.Entry(variant_frame, width=30)
         self.entry_nucleotide_change.grid(column=1, row=2, padx=10, pady=5)
-        # Tooltip or hint could be added here for HGVS format
+        # HGVS hint label
+        self.label_nucleotide_hint = ttk.Label(variant_frame, text="(Format: 123A>G eller 456del)", font=("Arial", 8), foreground="gray")
+        self.label_nucleotide_hint.grid(column=1, row=2, padx=10, pady=5, sticky="e")
 
         self.label_protein_change = ttk.Label(variant_frame, text="Specifik proteinkodande förändring:")
         self.label_protein_change.grid(column=0, row=3, padx=10, pady=5)
-        self.entry_protein_change = ttk.Entry(variant_frame)
+        self.entry_protein_change = ttk.Entry(variant_frame, width=30)
         self.entry_protein_change.grid(column=1, row=3, padx=10, pady=5)
-        # Tooltip or hint could be added here for HGVS format
+        # HGVS hint label
+        self.label_protein_hint = ttk.Label(variant_frame, text="(Format: Arg123Cys eller Leu456del)", font=("Arial", 8), foreground="gray")
+        self.label_protein_hint.grid(column=1, row=3, padx=10, pady=5, sticky="e")
 
         self.label_zygosity = ttk.Label(variant_frame, text="Vad är zygositeten för varianten?")
         self.label_zygosity.grid(column=0, row=4, padx=10, pady=5)
@@ -97,16 +101,32 @@ class VariantInfoCollector:
         self.button_add_variant = ttk.Button(self.frame, text="Lägg till variant", command=self.add_variant)
         self.button_add_variant.grid(column=0, row=11, padx=10, pady=5)
 
+        # Variant list management
+        list_frame = ttk.LabelFrame(self.frame, text="Tillagda varianter")
+        list_frame.grid(column=0, row=12, columnspan=2, padx=10, pady=10, sticky="ew")
+        
+        # Listbox with scrollbar
+        scrollbar = ttk.Scrollbar(list_frame, orient="vertical")
+        self.variant_listbox = tk.Listbox(list_frame, height=5, yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.variant_listbox.yview)
+        
+        self.variant_listbox.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+        scrollbar.pack(side="right", fill="y", pady=5)
+        
+        # Remove variant button
+        self.button_remove_variant = ttk.Button(self.frame, text="Ta bort vald variant", command=self.remove_variant)
+        self.button_remove_variant.grid(column=0, row=13, padx=10, pady=5)
+
         self.button_submit = ttk.Button(self.frame, text="Avsluta och generera rapport", command=self.submit_all)
-        self.button_submit.grid(column=1, row=11, padx=10, pady=5)
+        self.button_submit.grid(column=1, row=13, padx=10, pady=5)
 
         # Ny knapp: normalfynd
         self.button_normal = ttk.Button(self.frame, text="Generera normalfynd", command=self.generate_normal_finding)
-        self.button_normal.grid(column=0, row=12, columnspan=2, padx=10, pady=5)
+        self.button_normal.grid(column=0, row=14, columnspan=2, padx=10, pady=5)
 
         # Tillbaka-knapp
         self.button_back = ttk.Button(self.frame, text="Tillbaka", command=self.show_previous_step)
-        self.button_back.grid(column=0, row=13, columnspan=2, padx=10, pady=5)
+        self.button_back.grid(column=0, row=15, columnspan=2, padx=10, pady=5)
 
 
     def update_genes(self, event):
@@ -173,8 +193,53 @@ class VariantInfoCollector:
         }
         self.data["variants"].append(variant)
         
+        # Update the listbox with the new variant
+        self._update_variant_listbox()
+        
+        # Clear the input fields for the next variant
+        self._clear_variant_fields()
+        
         logger.info(f"Added variant for gene {gene}")
         messagebox.showinfo("Info", f"Varianten har lagts till. Totalt {len(self.data['variants'])} variant(er).")
+
+    def _update_variant_listbox(self):
+        """Update the listbox to show all added variants."""
+        self.variant_listbox.delete(0, tk.END)
+        for i, variant in enumerate(self.data["variants"], 1):
+            display_text = f"{i}. {variant['Gene']} - c.{variant['Nucleotide change']} p.{variant['Protein change']}"
+            self.variant_listbox.insert(tk.END, display_text)
+    
+    def _clear_variant_fields(self):
+        """Clear all variant input fields after adding a variant."""
+        self.entry_nucleotide_change.delete(0, tk.END)
+        self.entry_protein_change.delete(0, tk.END)
+        self.combo_zygosity.set('')
+        self.combo_inheritance.set('')
+        self.combo_acmg.set('')
+        self.text_clinvar.delete("1.0", tk.END)
+        self.combo_further_studies.set('')
+    
+    def remove_variant(self):
+        """Remove the selected variant from the list."""
+        selection = self.variant_listbox.curselection()
+        if not selection:
+            messagebox.showwarning("Varning", "Välj en variant att ta bort från listan")
+            return
+        
+        index = selection[0]
+        removed_variant = self.data["variants"][index]
+        
+        # Confirm deletion
+        confirm = messagebox.askyesno(
+            "Bekräfta borttagning",
+            f"Vill du ta bort varianten för {removed_variant['Gene']}?"
+        )
+        
+        if confirm:
+            self.data["variants"].pop(index)
+            self._update_variant_listbox()
+            logger.info(f"Removed variant for gene {removed_variant['Gene']}")
+            messagebox.showinfo("Info", f"Varianten har tagits bort. Totalt {len(self.data['variants'])} variant(er) kvar.")
 
     def submit_all(self):
         """Submit all collected data and generate the document."""
