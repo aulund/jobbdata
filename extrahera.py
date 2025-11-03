@@ -22,8 +22,8 @@ def safe_move(src_path: Path, dst_dir: Path, existing_files: set) -> Path:
         dst_name = f"{base}_{i}{ext}"
         i += 1
     dst_path = dst_dir / dst_name
-    existing_files.add(dst_name)
     shutil.move(src_path, dst_path)
+    existing_files.add(dst_name)  # Add after successful move
     return dst_path
 
 def extract_zip(zpath: Path, outdir: Path):
@@ -69,6 +69,7 @@ for item in archives:
     name_lower = item.name.lower()
     
     # Skip files that definitely aren't archives based on extension
+    # Note: .tar.gz files have suffix='.gz', .tar.bz2 have suffix='.bz2', etc.
     # We support: .zip, .tar, .tar.gz, .tar.bz2, .tar.xz, .tgz, and standalone .gz files
     if suffix_lower not in {'.zip', '.tar', '.gz', '.tgz', '.bz2', '.xz'}:
         continue
@@ -86,8 +87,8 @@ for item in archives:
             is_tar = tarfile.is_tarfile(item)
         except Exception:
             pass
-    elif suffix_lower == '.gz' and not name_lower.endswith('.tar.gz'):
-        # Simple gzip file (not tar.gz)
+    elif suffix_lower == '.gz' and not (name_lower.endswith('.tar.gz') or name_lower.endswith('.tgz')):
+        # Simple gzip file (not tar.gz or .tgz)
         is_gz = True
     else:
         # Fallback for ambiguous cases (.bz2, .xz without .tar prefix)
