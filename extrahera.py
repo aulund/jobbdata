@@ -69,6 +69,7 @@ for item in archives:
     name_lower = item.name.lower()
     
     # Skip files that definitely aren't archives based on extension
+    # This pre-filtering avoids expensive is_zipfile/is_tarfile file I/O for non-archives
     # Note: .tar.gz files have suffix='.gz', .tar.bz2 have suffix='.bz2', etc.
     # We support: .zip, .tar, .tar.gz, .tar.bz2, .tar.xz, .tgz, and standalone .gz files
     if suffix_lower not in {'.zip', '.tar', '.gz', '.tgz', '.bz2', '.xz'}:
@@ -87,7 +88,7 @@ for item in archives:
             is_tar = tarfile.is_tarfile(item)
         except Exception:
             pass
-    elif suffix_lower == '.gz' and not (name_lower.endswith('.tar.gz') or name_lower.endswith('.tgz')):
+    elif suffix_lower == '.gz' and not name_lower.endswith(('.tar.gz', '.tgz')):
         # Simple gzip file (not tar.gz or .tgz)
         is_gz = True
     else:
