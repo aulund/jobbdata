@@ -69,6 +69,7 @@ for item in archives:
     name_lower = item.name.lower()
     
     # Skip files that definitely aren't archives based on extension
+    # We support: .zip, .tar, .tar.gz, .tar.bz2, .tar.xz, .tgz, and standalone .gz files
     if suffix_lower not in {'.zip', '.tar', '.gz', '.tgz', '.bz2', '.xz'}:
         continue
     
@@ -79,7 +80,8 @@ for item in archives:
     
     if suffix_lower == '.zip':
         is_zip = zipfile.is_zipfile(item)
-    elif suffix_lower in {'.tar', '.tgz'} or name_lower.endswith('.tar.gz') or name_lower.endswith('.tar.bz2') or name_lower.endswith('.tar.xz'):
+    elif suffix_lower in {'.tar', '.tgz'} or name_lower.endswith(('.tar.gz', '.tar.bz2', '.tar.xz')):
+        # TAR files (possibly compressed) - tarfile.open with 'r:*' auto-detects compression
         try:
             is_tar = tarfile.is_tarfile(item)
         except Exception:
@@ -88,15 +90,14 @@ for item in archives:
         # Simple gzip file (not tar.gz)
         is_gz = True
     else:
-        # Fallback to full checks for ambiguous cases
-        is_zip = zipfile.is_zipfile(item)
-        if not is_zip:
-            try:
-                is_tar = tarfile.is_tarfile(item)
-            except Exception:
-                pass
-        if not (is_zip or is_tar) and suffix_lower == '.gz':
-            is_gz = True
+        # Fallback for ambiguous cases (.bz2, .xz without .tar prefix)
+        # Try tar first, then fall back to zip check
+        try:
+            is_tar = tarfile.is_tarfile(item)
+        except Exception:
+            pass
+        if not is_tar:
+            is_zip = zipfile.is_zipfile(item)
 
     if not (is_zip or is_tar or is_gz):
         continue
