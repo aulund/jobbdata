@@ -49,11 +49,13 @@ class VariantInfoCollector:
         self.label_nucleotide_change.grid(column=0, row=2, padx=10, pady=5)
         self.entry_nucleotide_change = ttk.Entry(variant_frame)
         self.entry_nucleotide_change.grid(column=1, row=2, padx=10, pady=5)
+        # Tooltip or hint could be added here for HGVS format
 
         self.label_protein_change = ttk.Label(variant_frame, text="Specifik proteinkodande förändring:")
         self.label_protein_change.grid(column=0, row=3, padx=10, pady=5)
         self.entry_protein_change = ttk.Entry(variant_frame)
         self.entry_protein_change.grid(column=1, row=3, padx=10, pady=5)
+        # Tooltip or hint could be added here for HGVS format
 
         self.label_zygosity = ttk.Label(variant_frame, text="Vad är zygositeten för varianten?")
         self.label_zygosity.grid(column=0, row=4, padx=10, pady=5)

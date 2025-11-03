@@ -23,6 +23,11 @@ def generate_document(data, output_path):
         if not data:
             logger.error("No data provided for document generation")
             return None
+        
+        # Validate output path
+        if not output_path or '..' in output_path:
+            logger.error(f"Invalid output path: {output_path}")
+            return None
 
         # Check if this is a normal finding
         if data.get("Normalfynd", False):
@@ -95,6 +100,11 @@ def generate_normalfinding_document(data, output_path):
         str: Path to the generated document, or None if generation failed
     """
     try:
+        # Validate output path
+        if not output_path or '..' in output_path:
+            logger.error(f"Invalid output path: {output_path}")
+            return None
+            
         doc = Document()
 
         gene = data.get("Gene", "okänd gen")

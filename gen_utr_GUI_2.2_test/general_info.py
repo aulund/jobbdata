@@ -9,6 +9,7 @@ try:
     PIL_AVAILABLE = True
 except ImportError:
     PIL_AVAILABLE = False
+    logging.warning("PIL (Pillow) not available. DNA helix image will not be displayed.")
     
 import config
 
