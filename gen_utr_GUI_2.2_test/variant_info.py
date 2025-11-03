@@ -5,6 +5,8 @@ import logging
 from generate_document import generate_document
 import config
 
+logger = logging.getLogger(__name__)
+
 # Import export and database modules
 try:
     from export import export_to_excel, export_to_pdf, is_excel_available, is_pdf_available
@@ -19,8 +21,6 @@ try:
 except ImportError:
     DATABASE_AVAILABLE = False
     logger.warning("Database module not available")
-
-logger = logging.getLogger(__name__)
 
 
 class VariantInfoCollector:
