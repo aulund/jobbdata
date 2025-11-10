@@ -1,12 +1,189 @@
 import os
 import logging
 from docx import Document
+from docx.shared import Pt, RGBColor, Inches
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
 import config
 
 logger = logging.getLogger(__name__)
 
 # Template file name (can be customized)
 TEMPLATE_FILE = "variant_report_template.docx"
+
+
+def add_horizontal_line(paragraph):
+    """
+    Add a horizontal line (border) to a paragraph.
+    
+    Args:
+        paragraph: The paragraph to add the border to
+    """
+    p = paragraph._element
+    pPr = p.get_or_add_pPr()
+    pBdr = OxmlElement('w:pBdr')
+    bottom = OxmlElement('w:bottom')
+    bottom.set(qn('w:val'), 'single')
+    bottom.set(qn('w:sz'), '12')  # Border size
+    bottom.set(qn('w:space'), '1')
+    bottom.set(qn('w:color'), '4472C4')  # Professional blue color
+    pBdr.append(bottom)
+    pPr.append(pBdr)
+
+
+def style_heading(paragraph, text, level=1, color=None):
+    """
+    Apply professional styling to a heading.
+    
+    Args:
+        paragraph: The paragraph to style
+        text: The text content
+        level: Heading level (1-3)
+        color: Optional RGB color tuple (r, g, b)
+    """
+    run = paragraph.add_run(text)
+    
+    if level == 1:
+        run.font.size = Pt(20)
+        run.font.bold = True
+        run.font.color.rgb = RGBColor(68, 114, 196) if not color else RGBColor(*color)  # Professional blue
+    elif level == 2:
+        run.font.size = Pt(16)
+        run.font.bold = True
+        run.font.color.rgb = RGBColor(68, 114, 196) if not color else RGBColor(*color)
+    else:
+        run.font.size = Pt(14)
+        run.font.bold = True
+        run.font.color.rgb = RGBColor(89, 89, 89) if not color else RGBColor(*color)  # Dark gray
+    
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+
+def add_section_heading(doc, text, level=2):
+    """
+    Add a professional section heading with styling.
+    
+    Args:
+        doc: Document object
+        text: Heading text
+        level: Heading level
+        
+    Returns:
+        The created paragraph
+    """
+    paragraph = doc.add_paragraph()
+    style_heading(paragraph, text, level)
+    return paragraph
+
+
+def add_styled_paragraph(doc, text, bold=False, indent=False):
+    """
+    Add a styled paragraph with consistent formatting.
+    
+    Args:
+        doc: Document object
+        text: Paragraph text
+        bold: Whether to make text bold
+        indent: Whether to indent the paragraph
+        
+    Returns:
+        The created paragraph
+    """
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(text)
+    run.font.size = Pt(11)
+    run.font.name = 'Calibri'
+    
+    if bold:
+        run.font.bold = True
+    
+    if indent:
+        paragraph.paragraph_format.left_indent = Inches(0.25)
+    
+    paragraph.paragraph_format.space_after = Pt(6)
+    return paragraph
+
+
+def add_spacer(doc, size=12):
+    """
+    Add vertical spacing between sections.
+    
+    Args:
+        doc: Document object
+        size: Space size in points
+    """
+    paragraph = doc.add_paragraph()
+    paragraph.paragraph_format.space_after = Pt(size)
+
+
+def add_variant_table(doc, variant, variant_number):
+    """
+    Add a professionally formatted table for variant information.
+    
+    Args:
+        doc: Document object
+        variant: Dictionary containing variant details
+        variant_number: The number/index of this variant
+    """
+    # Add variant heading
+    add_section_heading(doc, f"Genetisk Variant {variant_number}", level=2)
+    add_spacer(doc, 6)
+    
+    # Create table with 2 columns
+    table = doc.add_table(rows=0, cols=2)
+    table.style = 'Light Grid Accent 1'
+    
+    # Helper function to add a row
+    def add_row(label, value):
+        row = table.add_row()
+        label_cell = row.cells[0]
+        value_cell = row.cells[1]
+        
+        # Style label cell
+        label_para = label_cell.paragraphs[0]
+        label_run = label_para.add_run(label)
+        label_run.font.bold = True
+        label_run.font.size = Pt(10)
+        label_run.font.color.rgb = RGBColor(68, 114, 196)
+        
+        # Style value cell
+        value_para = value_cell.paragraphs[0]
+        value_run = value_para.add_run(str(value))
+        value_run.font.size = Pt(10)
+    
+    # Add variant details
+    gene = variant.get('Gene', config.DEFAULT_UNKNOWN_VALUE)
+    transcript = variant.get('Transcript', config.DEFAULT_UNKNOWN_VALUE)
+    nucleotide_change = variant.get('Nucleotide change', config.DEFAULT_UNKNOWN_VALUE).strip()
+    protein_change = variant.get('Protein change', config.DEFAULT_UNKNOWN_VALUE).strip()
+    zygosity = variant.get('Zygosity', config.DEFAULT_UNKNOWN_VALUE)
+    inheritance = variant.get('Inheritance', config.DEFAULT_UNKNOWN_VALUE)
+    disease = variant.get('Disease', config.DEFAULT_UNKNOWN_VALUE)
+    acmg = variant.get('ACMG criteria assessment', config.DEFAULT_UNKNOWN_VALUE)
+    clinvar = variant.get('ClinVar and hemophilia database reports', config.DEFAULT_UNKNOWN_VALUE)
+    
+    add_row("Gen", f"{gene}")
+    add_row("Transkript", f"{transcript}")
+    add_row("Nukleotidförändring", f"c.{nucleotide_change}")
+    add_row("Proteinförändring", f"p.{protein_change}")
+    add_row("Zygositet", f"{zygosity}")
+    add_row("Nedärvning", f"{inheritance}")
+    add_row("Sjukdom", f"{disease}")
+    add_row("ACMG-bedömning", f"{acmg}")
+    
+    # Set column widths
+    table.columns[0].width = Inches(2.0)
+    table.columns[1].width = Inches(4.5)
+    
+    add_spacer(doc, 6)
+    
+    # Add clinical significance paragraph
+    if clinvar != config.DEFAULT_UNKNOWN_VALUE and clinvar.strip():
+        add_styled_paragraph(doc, "Sammanfattning och utlåtande:", bold=True)
+        add_styled_paragraph(doc, clinvar, indent=True)
+    
+    add_spacer(doc, 12)
 
 
 def generate_document(data, output_path):
@@ -54,37 +231,55 @@ def generate_document(data, output_path):
             doc = Document()
             logger.info("No template found, creating blank document")
         
-        # Generate variant finding document
-        main_heading = f"{data['LID-NR']} -- {data['variants'][0]['Gene'].upper()}"
-        doc.add_heading(main_heading, level=1)
-
-        doc.add_paragraph("------------------------------")
+        # Generate variant finding document with professional styling
+        main_heading = f"Genetisk Rapport: {data['LID-NR']} - {data['variants'][0]['Gene'].upper()}"
+        heading_para = doc.add_paragraph()
+        style_heading(heading_para, main_heading, level=1)
+        
+        # Add decorative line
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 12)
+        
+        # Add each variant with professional table format
         for i, variant in enumerate(data['variants'], 1):
             variant['Transcript'] = variant.get('Transcript', data.get('Transcript', config.DEFAULT_UNKNOWN_VALUE))
             variant['Disease'] = variant.get('Disease', data.get('Disease', config.DEFAULT_UNKNOWN_VALUE))
             
-            variant_info = process_variant_info(variant)
-            doc.add_paragraph(f"Genetisk Variant {i}:")
-            doc.add_paragraph(variant_info)
+            add_variant_table(doc, variant, i)
 
-            assessment_info = process_assessment_info(variant)
-            doc.add_paragraph(assessment_info)
-            doc.add_paragraph("------------------------------")
-
+        # Proband information section
+        add_section_heading(doc, "Proband Information", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
         proband_info = process_proband_info(data)
-        doc.add_paragraph("Proband:")
-        doc.add_paragraph(proband_info)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, proband_info)
+        add_spacer(doc, 12)
 
+        # Genomic analysis section
+        add_section_heading(doc, "Genomisk Analys", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
         genomic_analysis_info = process_genomic_analysis_info(data)
-        doc.add_paragraph("Genomisk Analys:")
-        doc.add_paragraph(genomic_analysis_info)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, genomic_analysis_info)
+        add_spacer(doc, 12)
 
+        # Add references section
+        add_references_section(doc)
+        add_spacer(doc, 12)
+
+        # Sender information section
+        add_section_heading(doc, "Avsändare", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
         sender_info = get_sender_info()
-        doc.add_paragraph("Avsändare:")
-        doc.add_paragraph(sender_info)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, sender_info)
 
         # Ensure output directory exists
         os.makedirs(output_path, exist_ok=True)
@@ -130,29 +325,52 @@ def generate_normalfinding_document(data, output_path):
         transcript = data.get("Transcript", "")
         sequencing_method = data.get("Sequencing method", "okänd metod")
 
-        main_heading = f"{lid_nr} -- {gene.upper()}"
-        doc.add_heading(main_heading, level=1)
+        # Main heading with professional styling
+        main_heading = f"Genetisk Rapport: {lid_nr} - {gene.upper()}"
+        heading_para = doc.add_paragraph()
+        style_heading(heading_para, main_heading, level=1)
+        
+        # Add decorative line
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 12)
 
-        doc.add_paragraph("------------------------------")
-        doc.add_paragraph("Normalt Fynd:")
+        # Normal finding section
+        add_section_heading(doc, "Normalt Fynd", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
         
         normal_text = config.NORMAL_FINDING_TEXT.format(
             gene=gene,
             transcript=transcript,
             method=sequencing_method
         )
-        doc.add_paragraph(normal_text)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, normal_text)
+        add_spacer(doc, 12)
 
+        # Genomic analysis section
+        add_section_heading(doc, "Genomisk Analys", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
         genomic_info = process_genomic_analysis_info(data)
-        doc.add_paragraph("Genomisk Analys:")
-        doc.add_paragraph(genomic_info)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, genomic_info)
+        add_spacer(doc, 12)
 
+        # Add references section
+        add_references_section(doc)
+        add_spacer(doc, 12)
+
+        # Sender information section
+        add_section_heading(doc, "Avsändare", level=2)
+        line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
         sender_info = get_sender_info()
-        doc.add_paragraph("Avsändare:")
-        doc.add_paragraph(sender_info)
-        doc.add_paragraph("------------------------------")
+        add_styled_paragraph(doc, sender_info)
 
         # Ensure output directory exists
         os.makedirs(output_path, exist_ok=True)
@@ -258,3 +476,33 @@ def get_sender_info():
         str: Sender information
     """
     return config.SENDER_INFO
+
+
+def add_references_section(doc):
+    """
+    Add a professional references section to the document.
+    
+    Args:
+        doc: Document object
+    """
+    add_section_heading(doc, "Referenser", level=2)
+    line_para = doc.add_paragraph()
+    add_horizontal_line(line_para)
+    add_spacer(doc, 6)
+    
+    references = [
+        "Genome Reference Consortium Human Build (2022), Vol. 37.",
+        "Clinical genomics (2022), Stockholm, Sverige. Tillgängligt vid: https://www.scilifelab.se/facilities/clinical-genomics-stockholm/",
+        "Scout (2022), Tillgängligt vid: https://github.com/Clinical-Genomics/scout",
+        "Landrum MJ, Lee JM, Benson M, Brown GR, Chao C, Chitipiralla S, Gu B, Hart J, Hoffman D, Jang W, Karapetyan K, Katz K, Liu C, Maddipatla Z, Malheiro A, McDaniel K, Ovetsky M, Riley G, Zhou G, Holmes JB, Kattman BL, Maglott DR. ClinVar: improving access to variant interpretations and supporting evidence. Nucleic Acids Res, 2018 Jan 4. PubMed PMID: 29165669",
+        "EAHAD Coagulation Factor Variant Databases (2022): https://dbs.eahad.org",
+        "Richards, Sue et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genetics in medicine: official journal of the American College of Medical Genetics vol. 17,5 (2015): 405-24. doi:10.1038/gim.2015.30"
+    ]
+    
+    for i, ref in enumerate(references, 1):
+        para = doc.add_paragraph()
+        run = para.add_run(f"{i}. {ref}")
+        run.font.size = Pt(9)
+        run.font.name = 'Calibri'
+        para.paragraph_format.left_indent = Inches(0.25)
+        para.paragraph_format.space_after = Pt(3)

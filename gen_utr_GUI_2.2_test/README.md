@@ -1,4 +1,4 @@
-# Genetisk Variant Datainsamling - Version 2.5
+# Genetisk Variant Datainsamling - Version 2.6
 
 Detta är en GUI-applikation för insamling av genetisk variantdata och generering av rapporter.
 
@@ -12,8 +12,37 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 - **PDF-export**: Konvertera Word-dokument till PDF-format
 - **Databaslagring**: Spara varianter i SQLite-databas för historik och analys
 - **Dokumentmallar**: Använd anpassade Word-mallar för rapporter
+- **Professionell dokumentformatering**: Automatisk generering av professionella Word-dokument med styling
 - Automatisk generering av Word-dokument med rapporter
 - Stöd för normalfynd (inga varianter påvisade)
+
+## Förbättringar i version 2.6
+
+### Professionell dokumentformatering
+- **Professionell typografi**: Stiliserade rubriker med professionell blå färg (#4472C4)
+  - Huvudrubrik: 20pt fetstil
+  - Sektionsrubriker: 16pt fetstil
+  - Brödtext: 11pt Calibri för bättre läsbarhet
+  
+- **Strukturerade datatabeller**: Variantinformation presenteras i professionella tabeller
+  - Tvåkolumnslayout med etiketter och värden
+  - Stiliserade headers i blått
+  - Tydlig och lättläst formatering
+  
+- **Visuell hierarki**: Förbättrad dokumentstruktur
+  - Professionella blå horisontella linjer mellan sektioner
+  - Konsekvent avstånd mellan element
+  - Tydliga sektionsgränser
+  
+- **Formell referenssektion**: Numrerad lista med vetenskapliga referenser
+  - Genome Reference Consortium
+  - Clinical Genomics Stockholm
+  - ClinVar databas
+  - ACMG-riktlinjer
+  
+- **Förbättrad avsändarinformation**: Komplett teamlista med roller
+
+Se CHANGELOG_v2.6.md för fullständiga detaljer.
 
 ## Förbättringar i version 2.5
 
@@ -29,7 +58,7 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
   - Fallback till blank dokument om mall saknas
   - Se TEMPLATE_INSTRUCTIONS.md för detaljer
 
-## Förbättringar i version 2.4
+## Förbättringar i version 2.5
 
 ### Nya funktioner
 - **Excel-export**: Exportera alla variantdata till strukturerad Excel-fil med formatering
@@ -42,7 +71,7 @@ Detta är en GUI-applikation för insamling av genetisk variantdata och genereri
 - **Export-alternativ**: Checkboxar i GUI för att välja exportformat
 - **requirements.txt**: Specificerade beroenden för enkel installation
 
-## Förbättringar i version 2.3
+## Förbättringar i version 2.4
 
 ### Nya funktioner
 - **Variantlista**: Visar alla tillagda varianter i en lista

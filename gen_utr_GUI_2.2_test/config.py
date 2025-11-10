@@ -7,7 +7,7 @@ import os
 
 # Application settings
 APP_TITLE = "Genetisk Variant Datainsamling"
-APP_VERSION = "2.5"
+APP_VERSION = "2.6"
 
 # Output directory configuration
 # These paths are configurable and can be overridden by environment variables
@@ -59,7 +59,9 @@ DNA_IMAGE_FILE = "dna_helix.png"
 DNA_IMAGE_SIZE = (100, 100)
 
 # Sender information
-SENDER_INFO = "MVH August Lundholm, Molekylärbiolog"
+SENDER_INFO = """Professor, Överläkare: Jovan Antovic
+Sjukhuskemist: August Lundholm
+Biomedicinsk analytiker: Somia Echehli"""
 
 # Sequencing methods
 SEQUENCING_METHODS = ["MPS", "Sanger"]
