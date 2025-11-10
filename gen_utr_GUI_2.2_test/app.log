@@ -160,3 +160,29 @@ PermissionError: [Errno 13] Permission denied: 'U:\\DNA_Sekvenseringsresultat\\R
 2025-11-10 13:18:47,373 - database - INFO - Database session closed
 2025-11-10 13:18:49,988 - gui_manager - INFO - Data submitted, closing application
 2025-11-10 13:18:50,000 - __main__ - INFO - Application closed
+2025-11-10 14:19:31,347 - __main__ - INFO - Starting application
+2025-11-10 14:19:31,611 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 14:19:32,671 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 14:19:32,704 - gui_manager - INFO - MainGUI initialized
+2025-11-10 14:19:41,823 - general_info - INFO - Collected general info data for LID-NR: test2
+2025-11-10 14:19:41,829 - general_info - INFO - Navigating to variant info step
+2025-11-10 14:19:41,858 - gui_manager - INFO - Showing variant info step
+2025-11-10 14:19:48,337 - variant_info - INFO - Autofilled data for gene PROC: NM_000312, Protein C-brist
+2025-11-10 14:19:58,463 - variant_info - INFO - Added variant for gene PROC
+2025-11-10 14:20:03,576 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 14:20:03,582 - generate_document - INFO - Starting report generation...
+2025-11-10 14:20:03,740 - generate_document - INFO - Using template: H:\jobbdata\gen_utr_GUI_2.2_test\variant_report_template.docx
+2025-11-10 14:20:04,154 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\test2_PROC.docx
+2025-11-10 14:20:04,159 - export - INFO - Starting Excel export...
+2025-11-10 14:20:04,764 - export - INFO - Appending to existing file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 14:20:05,128 - export - INFO - Excel data appended to collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 14:20:05,134 - variant_info - INFO - Excel export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 14:20:05,140 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\test2_PROC.docx...
+2025-11-10 14:20:13,603 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\test2_PROC.pdf
+2025-11-10 14:20:13,609 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\test2_PROC.pdf
+2025-11-10 14:20:13,855 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 14:20:13,986 - database - INFO - Saved variant record with ID 7
+2025-11-10 14:20:13,992 - variant_info - INFO - Saved to database with IDs: [7]
+2025-11-10 14:20:13,999 - database - INFO - Database session closed
+2025-11-10 14:20:15,895 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 14:20:15,901 - __main__ - INFO - Application closed
