@@ -119,7 +119,7 @@ def add_spacer(doc, size=12):
 
 def add_variant_table(doc, variant, variant_number):
     """
-    Add a professionally formatted table for variant information.
+    Add a professionally formatted table for variant information with proper borders.
     
     Args:
         doc: Document object
@@ -132,7 +132,35 @@ def add_variant_table(doc, variant, variant_number):
     
     # Create table with 2 columns
     table = doc.add_table(rows=0, cols=2)
-    table.style = 'Light Grid Accent 1'
+    table.style = 'Table Grid'  # Use Table Grid for visible borders
+    
+    # Apply table borders explicitly
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    
+    def set_table_borders(table):
+        """Set consistent borders for the entire table"""
+        tbl = table._element
+        tblPr = tbl.tblPr
+        if tblPr is None:
+            tblPr = OxmlElement('w:tblPr')
+            tbl.insert(0, tblPr)
+        
+        # Create table borders element
+        tblBorders = OxmlElement('w:tblBorders')
+        
+        # Define border settings for all sides
+        for border_name in ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']:
+            border = OxmlElement(f'w:{border_name}')
+            border.set(qn('w:val'), 'single')
+            border.set(qn('w:sz'), '4')  # Border width in eighths of a point
+            border.set(qn('w:space'), '0')
+            border.set(qn('w:color'), '000000')  # Black borders
+            tblBorders.append(border)
+        
+        tblPr.append(tblBorders)
+    
+    set_table_borders(table)
     
     # Helper function to add a row
     def add_row(label, value):
@@ -144,13 +172,18 @@ def add_variant_table(doc, variant, variant_number):
         label_para = label_cell.paragraphs[0]
         label_run = label_para.add_run(label)
         label_run.font.bold = True
-        label_run.font.size = Pt(10)
+        label_run.font.size = Pt(11)
         label_run.font.color.rgb = RGBColor(68, 114, 196)
+        label_para.paragraph_format.space_before = Pt(3)
+        label_para.paragraph_format.space_after = Pt(3)
         
         # Style value cell
         value_para = value_cell.paragraphs[0]
         value_run = value_para.add_run(str(value))
-        value_run.font.size = Pt(10)
+        value_run.font.size = Pt(11)
+        value_run.font.name = 'Calibri'
+        value_para.paragraph_format.space_before = Pt(3)
+        value_para.paragraph_format.space_after = Pt(3)
     
     # Add variant details
     gene = variant.get('Gene', config.DEFAULT_UNKNOWN_VALUE)
@@ -172,9 +205,9 @@ def add_variant_table(doc, variant, variant_number):
     add_row("Sjukdom", f"{disease}")
     add_row("ACMG-bedömning", f"{acmg}")
     
-    # Set column widths
-    table.columns[0].width = Inches(2.0)
-    table.columns[1].width = Inches(4.5)
+    # Set column widths with better proportions
+    table.columns[0].width = Inches(2.2)
+    table.columns[1].width = Inches(4.3)
     
     add_spacer(doc, 6)
     
@@ -227,12 +260,29 @@ def generate_document(data, output_path):
         if os.path.exists(template_path):
             doc = Document(template_path)
             logger.info(f"Using template: {template_path}")
+            
+            # Fill in LID-NR in the template table if it exists
+            if doc.tables and len(doc.tables) > 0:
+                template_table = doc.tables[0]
+                # Look for the LID field in the table
+                for row in template_table.rows:
+                    for cell in row.cells:
+                        if "LID" in cell.text:
+                            # Add LID-NR value after the "LID:" text
+                            cell.text = f"LID: {data['LID-NR']}"
+                            # Apply formatting
+                            if cell.paragraphs:
+                                for para in cell.paragraphs:
+                                    for run in para.runs:
+                                        run.font.size = Pt(11)
+                                        run.font.bold = True
+                            break
         else:
             doc = Document()
             logger.info("No template found, creating blank document")
         
-        # Generate variant finding document with professional styling
-        main_heading = f"Genetisk Rapport: {data['LID-NR']} - {data['variants'][0]['Gene'].upper()}"
+        # Add main heading after template content
+        main_heading = f"Genetisk Rapport: {data['variants'][0]['Gene'].upper()}"
         heading_para = doc.add_paragraph()
         style_heading(heading_para, main_heading, level=1)
         
@@ -275,6 +325,24 @@ def generate_document(data, output_path):
         # Sender information section
         add_section_heading(doc, "Avsändare", level=2)
         line_para = doc.add_paragraph()
+        add_horizontal_line(line_para)
+        add_spacer(doc, 6)
+        
+        sender_info = get_sender_info()
+        add_styled_paragraph(doc, sender_info)
+
+        # Ensure output directory exists
+        os.makedirs(output_path, exist_ok=True)
+
+        filename = f"{data['LID-NR']}_{data['variants'][0]['Gene'].upper()}.docx"
+        output_file = os.path.join(output_path, filename)
+        doc.save(output_file)
+        logger.info(f"Document successfully created: {output_file}")
+        return output_file
+
+    except Exception as e:
+        logger.error(f"Error during report generation: {e}", exc_info=True)
+        return None
         add_horizontal_line(line_para)
         add_spacer(doc, 6)
         
