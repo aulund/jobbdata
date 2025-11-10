@@ -1,0 +1,162 @@
+2025-11-10 11:51:20,512 - __main__ - INFO - Starting application
+2025-11-10 11:51:20,717 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 11:51:20,967 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 11:51:20,999 - gui_manager - INFO - MainGUI initialized
+2025-11-10 11:51:31,397 - general_info - INFO - Collected general info data for LID-NR: x
+2025-11-10 11:51:31,403 - general_info - INFO - Navigating to variant info step
+2025-11-10 11:51:31,428 - gui_manager - INFO - Showing variant info step
+2025-11-10 11:51:37,014 - variant_info - INFO - Autofilled data for gene F5: NM_000130, Faktor V Leiden eller Faktor V-brist
+2025-11-10 11:51:52,381 - variant_info - INFO - Added variant for gene F5
+2025-11-10 11:51:58,293 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 11:51:58,301 - generate_document - INFO - Starting report generation...
+2025-11-10 11:51:58,323 - generate_document - INFO - No template found, creating blank document
+2025-11-10 11:51:58,747 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\x_F5.docx
+2025-11-10 11:51:58,753 - export - INFO - Starting Excel export...
+2025-11-10 11:51:58,782 - export - INFO - Created new collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:51:58,861 - export - INFO - Excel data appended to collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:51:58,867 - variant_info - INFO - Excel export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:51:58,873 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\x_F5.docx...
+2025-11-10 11:52:06,394 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\x_F5.pdf
+2025-11-10 11:52:06,402 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\x_F5.pdf
+2025-11-10 11:52:06,969 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 11:52:07,140 - database - INFO - Saved variant record with ID 1
+2025-11-10 11:52:07,146 - variant_info - INFO - Saved to database with IDs: [1]
+2025-11-10 11:52:07,152 - database - INFO - Database session closed
+2025-11-10 11:52:17,739 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 11:52:17,745 - __main__ - INFO - Application closed
+2025-11-10 11:53:41,682 - __main__ - INFO - Starting application
+2025-11-10 11:53:41,885 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 11:53:42,167 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 11:53:42,202 - gui_manager - INFO - MainGUI initialized
+2025-11-10 11:54:01,632 - general_info - INFO - Collected general info data for LID-NR: hej
+2025-11-10 11:54:01,639 - general_info - INFO - Navigating to variant info step
+2025-11-10 11:54:01,665 - gui_manager - INFO - Showing variant info step
+2025-11-10 11:54:04,731 - variant_info - INFO - Autofilled data for gene VWF: NM_000552, von Willebrands sjukdom
+2025-11-10 11:54:14,976 - variant_info - INFO - Added variant for gene VWF
+2025-11-10 11:54:17,409 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 11:54:17,415 - generate_document - INFO - Starting report generation...
+2025-11-10 11:54:17,442 - generate_document - INFO - No template found, creating blank document
+2025-11-10 11:54:17,530 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\hej_VWF.docx
+2025-11-10 11:54:17,683 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 11:54:17,817 - database - INFO - Saved variant record with ID 2
+2025-11-10 11:54:17,823 - variant_info - INFO - Saved to database with IDs: [2]
+2025-11-10 11:54:17,829 - database - INFO - Database session closed
+2025-11-10 11:54:22,518 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 11:54:22,524 - __main__ - INFO - Application closed
+2025-11-10 11:54:28,981 - __main__ - INFO - Starting application
+2025-11-10 11:54:29,170 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 11:54:29,408 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 11:54:29,444 - gui_manager - INFO - MainGUI initialized
+2025-11-10 11:54:44,465 - general_info - INFO - Collected general info data for LID-NR: dig
+2025-11-10 11:54:44,472 - general_info - INFO - Navigating to variant info step
+2025-11-10 11:54:44,496 - gui_manager - INFO - Showing variant info step
+2025-11-10 11:54:47,660 - variant_info - INFO - Autofilled data for gene F13A1: NM_001994, Faktor XIII-brist
+2025-11-10 11:54:58,505 - variant_info - INFO - Added variant for gene F13A1
+2025-11-10 11:55:04,130 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 11:55:04,136 - generate_document - INFO - Starting report generation...
+2025-11-10 11:55:04,157 - generate_document - INFO - No template found, creating blank document
+2025-11-10 11:55:04,269 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\dig_F13A1.docx
+2025-11-10 11:55:04,274 - export - INFO - Starting Excel export...
+2025-11-10 11:55:04,927 - export - INFO - Appending to existing file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:55:05,285 - export - INFO - Excel data appended to collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:55:05,291 - variant_info - INFO - Excel export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 11:55:05,297 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\dig_F13A1.docx...
+2025-11-10 11:55:12,965 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\dig_F13A1.pdf
+2025-11-10 11:55:12,971 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\dig_F13A1.pdf
+2025-11-10 11:55:13,113 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 11:55:13,244 - database - INFO - Saved variant record with ID 3
+2025-11-10 11:55:13,251 - variant_info - INFO - Saved to database with IDs: [3]
+2025-11-10 11:55:13,257 - database - INFO - Database session closed
+2025-11-10 11:55:15,089 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 11:55:15,095 - __main__ - INFO - Application closed
+2025-11-10 13:09:34,054 - __main__ - INFO - Starting application
+2025-11-10 13:09:34,350 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 13:09:35,638 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 13:09:35,670 - gui_manager - INFO - MainGUI initialized
+2025-11-10 13:09:50,701 - general_info - INFO - Collected general info data for LID-NR: 232323232
+2025-11-10 13:09:50,708 - general_info - INFO - Navigating to variant info step
+2025-11-10 13:09:50,749 - gui_manager - INFO - Showing variant info step
+2025-11-10 13:09:59,623 - variant_info - INFO - Autofilled data for gene FGG: NM_000509, Fibrinogenbrist
+2025-11-10 13:10:25,462 - variant_info - INFO - Added variant for gene FGG
+2025-11-10 13:10:34,662 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 13:10:34,668 - generate_document - INFO - Starting report generation...
+2025-11-10 13:10:34,768 - generate_document - INFO - Using template: H:\jobbdata\gen_utr_GUI_2.2_test\variant_report_template.docx
+2025-11-10 13:10:34,898 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\232323232_FGG.docx
+2025-11-10 13:10:34,905 - export - INFO - Starting Excel export...
+2025-11-10 13:10:35,684 - export - INFO - Appending to existing file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:10:35,692 - export - ERROR - Error exporting to Excel: [Errno 13] Permission denied: 'U:\\DNA_Sekvenseringsresultat\\Remissvar Koagulation\\väntande på att svaras ut\\Koagulation_collective.xlsx'
+Traceback (most recent call last):
+  File "H:\jobbdata\gen_utr_GUI_2.2_test\export.py", line 161, in export_to_excel
+    wb.save(collective_path)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python313\Lib\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python313\Lib\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Program Files\Python313\Lib\zipfile\__init__.py", line 1367, in __init__
+    self.fp = io.open(file, filemode)
+              ~~~~~~~^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'U:\\DNA_Sekvenseringsresultat\\Remissvar Koagulation\\väntande på att svaras ut\\Koagulation_collective.xlsx'
+2025-11-10 13:10:35,843 - variant_info - WARNING - Excel export failed
+2025-11-10 13:10:35,848 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\232323232_FGG.docx...
+2025-11-10 13:10:42,435 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\232323232_FGG.pdf
+2025-11-10 13:10:42,441 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\232323232_FGG.pdf
+2025-11-10 13:10:42,673 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 13:10:42,917 - database - INFO - Saved variant record with ID 4
+2025-11-10 13:10:42,922 - variant_info - INFO - Saved to database with IDs: [4]
+2025-11-10 13:10:42,929 - database - INFO - Database session closed
+2025-11-10 13:10:44,176 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 13:10:44,182 - __main__ - INFO - Application closed
+2025-11-10 13:14:29,499 - __main__ - INFO - Starting application
+2025-11-10 13:14:29,689 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 13:14:30,044 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 13:14:30,080 - gui_manager - INFO - MainGUI initialized
+2025-11-10 13:14:38,885 - general_info - INFO - Collected general info data for LID-NR: pröv
+2025-11-10 13:14:38,891 - general_info - INFO - Navigating to variant info step
+2025-11-10 13:14:38,923 - gui_manager - INFO - Showing variant info step
+2025-11-10 13:14:43,383 - variant_info - INFO - Autofilled data for gene F8: NM_000132, Hemofili A
+2025-11-10 13:15:07,485 - variant_info - INFO - Added variant for gene F8
+2025-11-10 13:15:11,854 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 13:15:11,860 - generate_document - INFO - Starting report generation...
+2025-11-10 13:15:11,931 - generate_document - INFO - Using template: H:\jobbdata\gen_utr_GUI_2.2_test\variant_report_template.docx
+2025-11-10 13:15:12,035 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\pröv_F8.docx
+2025-11-10 13:15:12,040 - export - INFO - Starting Excel export...
+2025-11-10 13:15:12,662 - export - INFO - Appending to existing file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:15:13,081 - export - INFO - Excel data appended to collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:15:13,087 - variant_info - INFO - Excel export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:15:13,093 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\pröv_F8.docx...
+2025-11-10 13:15:18,867 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\pröv_F8.pdf
+2025-11-10 13:15:18,874 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\pröv_F8.pdf
+2025-11-10 13:15:19,028 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 13:15:19,196 - database - INFO - Saved variant record with ID 5
+2025-11-10 13:15:19,201 - variant_info - INFO - Saved to database with IDs: [5]
+2025-11-10 13:15:19,207 - database - INFO - Database session closed
+2025-11-10 13:15:21,503 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 13:15:21,511 - __main__ - INFO - Application closed
+2025-11-10 13:17:32,378 - __main__ - INFO - Starting application
+2025-11-10 13:17:32,633 - data_manager - INFO - Successfully loaded all data files
+2025-11-10 13:17:33,963 - general_info - INFO - Successfully loaded DNA image from dna_helix.png
+2025-11-10 13:17:34,000 - gui_manager - INFO - MainGUI initialized
+2025-11-10 13:17:55,058 - general_info - INFO - Collected general info data for LID-NR: nunu
+2025-11-10 13:17:55,063 - general_info - INFO - Navigating to variant info step
+2025-11-10 13:17:55,098 - gui_manager - INFO - Showing variant info step
+2025-11-10 13:17:58,084 - variant_info - INFO - Autofilled data for gene F7: NM_019616, Faktor VII-brist
+2025-11-10 13:18:33,867 - variant_info - INFO - Added variant for gene F7
+2025-11-10 13:18:36,155 - variant_info - INFO - Generating document for category: Koagulation
+2025-11-10 13:18:36,163 - generate_document - INFO - Starting report generation...
+2025-11-10 13:18:36,343 - generate_document - INFO - Using template: H:\jobbdata\gen_utr_GUI_2.2_test\variant_report_template.docx
+2025-11-10 13:18:36,498 - generate_document - INFO - Document successfully created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\nunu_F7.docx
+2025-11-10 13:18:36,504 - export - INFO - Starting Excel export...
+2025-11-10 13:18:37,157 - export - INFO - Appending to existing file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:18:37,712 - export - INFO - Excel data appended to collective file: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:18:37,719 - variant_info - INFO - Excel export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\Koagulation_collective.xlsx
+2025-11-10 13:18:37,733 - export - INFO - Starting PDF conversion for U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\nunu_F7.docx...
+2025-11-10 13:18:46,971 - export - INFO - PDF file created: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\nunu_F7.pdf
+2025-11-10 13:18:46,977 - variant_info - INFO - PDF export successful: U:\DNA_Sekvenseringsresultat\Remissvar Koagulation\väntande på att svaras ut\nunu_F7.pdf
+2025-11-10 13:18:47,211 - database - INFO - Database initialized at H:\jobbdata\gen_utr_GUI_2.2_test\variants.db
+2025-11-10 13:18:47,360 - database - INFO - Saved variant record with ID 6
+2025-11-10 13:18:47,367 - variant_info - INFO - Saved to database with IDs: [6]
+2025-11-10 13:18:47,373 - database - INFO - Database session closed
+2025-11-10 13:18:49,988 - gui_manager - INFO - Data submitted, closing application
+2025-11-10 13:18:50,000 - __main__ - INFO - Application closed
