@@ -57,6 +57,7 @@ def add_heavy_border_box(paragraph):
 def create_header_section(doc, data, page_num=1, total_pages=2):
     """
     Create the header section matching clinical laboratory format.
+    Uses data from actual input fields.
     
     Args:
         doc: Document object
@@ -68,25 +69,30 @@ def create_header_section(doc, data, page_num=1, total_pages=2):
     header_table = doc.add_table(rows=1, cols=3)
     header_table.autofit = False
     
-    # Logo cell (left) - placeholder
+    # Logo cell (left) - placeholder for when template is not used
     logo_cell = header_table.rows[0].cells[0]
     p = logo_cell.paragraphs[0]
     run = p.add_run(LAB_NAME)
-    set_arial_font(run, 10, bold=True)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
+    run.font.bold = True
     
     # Title cell (center)
     title_cell = header_table.rows[0].cells[1]
     p = title_cell.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = p.add_run(LAB_TITLE)
-    set_arial_font(run, 14, bold=True)
+    run.font.name = 'Arial'
+    run.font.size = Pt(14)
+    run.font.bold = True
     
     # Page number cell (right)
     page_cell = header_table.rows[0].cells[2]
     p = page_cell.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     run = p.add_run(f"Sida {page_num} av {total_pages}")
-    set_arial_font(run, 10)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
     
     # Set column widths
     header_table.columns[0].width = Inches(2.0)
@@ -97,71 +103,67 @@ def create_header_section(doc, data, page_num=1, total_pages=2):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = p.add_run(LAB_ACCREDITATION)
-    set_arial_font(run, 9)
+    run.font.name = 'Arial'
+    run.font.size = Pt(9)
     
     doc.add_paragraph()  # Spacing
     
     # Patient/Sample info and Test details side by side
     info_table = doc.add_table(rows=1, cols=2)
     
-    # Left side: Patient/Sample info
+    # Left side: Patient/Sample info (use actual data or defaults)
     left_cell = info_table.rows[0].cells[0]
     left_cell.width = Inches(3.5)
     
     p = left_cell.add_paragraph()
     run = p.add_run("Svar till:")
-    set_arial_font(run, 10, bold=True)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
+    run.font.bold = True
+    
+    # Use Category for facility name if available
+    facility = "Karolinska Universitetssjukhuset, DNA-laboratoriet"
+    category = data.get('Category', '')
+    if category:
+        facility = f"Karolinska H, {category}"
     
     p = left_cell.add_paragraph()
-    facility = data.get('Facility', 'Karolinska H, DNA Prod')
     run = p.add_run(facility)
-    set_arial_font(run, 10)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
     
     p = left_cell.add_paragraph()
-    address = data.get('Address', LAB_ADDRESS)
-    run = p.add_run(address)
-    set_arial_font(run, 10)
+    run = p.add_run(LAB_ADDRESS)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
     
-    p = left_cell.add_paragraph()
-    att = data.get('Attention', '')
-    if att:
-        run = p.add_run(f"Att: {att}")
-        set_arial_font(run, 10)
-    
-    # Right side: Test details
+    # Right side: Test details (use actual data)
     right_cell = info_table.rows[0].cells[1]
     right_cell.width = Inches(3.0)
     
     p = right_cell.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     run = p.add_run("Slutsvar medicinskt granskat")
-    set_arial_font(run, 10, bold=True)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
+    run.font.bold = True
     
     p = right_cell.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    response_date = data.get('Response_date', datetime.now().strftime("%Y-%m-%d"))
+    response_date = datetime.now().strftime("%Y-%m-%d")
     run = p.add_run(f"Svarsdatum: {response_date}")
-    set_arial_font(run, 10)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
     
     p = right_cell.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     lab_id = data.get('LID-NR', 'N/A')
     run = p.add_run(f"LabId: {lab_id}")
-    set_arial_font(run, 10)
+    run.font.name = 'Arial'
+    run.font.size = Pt(10)
     
-    p = right_cell.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    arrival_date = data.get('Arrival_date', '')
-    if arrival_date:
-        run = p.add_run(f"Ankomstdatum: {arrival_date}")
-        set_arial_font(run, 10)
-    
-    p = right_cell.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    remiss_id = data.get('Remiss_id', '')
-    if remiss_id:
-        run = p.add_run(f"RemissId: {remiss_id}")
-        set_arial_font(run, 10)
+    # Note: Arrival date and Remiss ID are not collected in the GUI,
+    # so we don't add them unless they're provided
     
     doc.add_paragraph()  # Spacing
 
@@ -178,7 +180,8 @@ def create_footer_section(doc):
     # Biobank information
     p = doc.add_paragraph()
     run = p.add_run("Biobankinformation: Prov kan sparas för kvalitetssäkring enligt Biobankslagen.")
-    set_arial_font(run, 9)
+    run.font.name = 'Arial'
+    run.font.size = Pt(9)
     run.underline = True
     
     # Version and date (right aligned)
@@ -186,14 +189,16 @@ def create_footer_section(doc):
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     version_date = datetime.now().strftime("%Y-%m-%d")
     run = p.add_run(f"Version 2.6 | {version_date}")
-    set_arial_font(run, 8)
+    run.font.name = 'Arial'
+    run.font.size = Pt(8)
     
     doc.add_paragraph()  # Spacing
     
     # Laboratory contact information
     p = doc.add_paragraph()
     run = p.add_run(LAB_CONTACT)
-    set_arial_font(run, 9)
+    run.font.name = 'Arial'
+    run.font.size = Pt(9)
 
 
 def create_boxed_section(doc, title, content_paragraphs):
@@ -231,7 +236,9 @@ def create_boxed_section(doc, title, content_paragraphs):
     # Add title
     p = cell.paragraphs[0]
     run = p.add_run(title)
-    set_arial_font(run, 11, bold=True)
+    run.font.name = 'Arial'
+    run.font.size = Pt(11)
+    run.font.bold = True
     p.paragraph_format.space_after = Pt(6)
     
     # Add content paragraphs
@@ -241,10 +248,13 @@ def create_boxed_section(doc, title, content_paragraphs):
         if isinstance(content, tuple):
             text, bold = content
             run = p.add_run(text)
-            set_arial_font(run, 10, bold=bold)
+            run.font.name = 'Arial'
+            run.font.size = Pt(10)
+            run.font.bold = bold
         else:
             run = p.add_run(content)
-            set_arial_font(run, 10)
+            run.font.name = 'Arial'
+            run.font.size = Pt(10)
         
         p.paragraph_format.space_after = Pt(3)
     
@@ -493,17 +503,36 @@ def generate_document(data, output_path):
             logger.error("No LID-NR provided in data")
             return None
 
-        # Create new document (not using template for clinical format)
-        doc = Document()
-        logger.info("Creating clinical laboratory report document")
-        
-        # Set document margins to match clinical format
-        sections = doc.sections
-        for section in sections:
-            section.top_margin = Cm(2.5)
-            section.bottom_margin = Cm(2.5)
-            section.left_margin = Cm(2.5)
-            section.right_margin = Cm(2.5)
+        # Load template with logos and formatting
+        template_path = os.path.join(os.path.dirname(__file__), TEMPLATE_FILE)
+        if os.path.exists(template_path):
+            doc = Document(template_path)
+            logger.info(f"Using template with logos: {template_path}")
+            
+            # Fill in LID-NR in the template table
+            if doc.tables and len(doc.tables) > 0:
+                template_table = doc.tables[0]
+                for row in template_table.rows:
+                    for cell in row.cells:
+                        if "LID" in cell.text:
+                            # Clear and set LID value
+                            cell.text = f"LID: {data['LID-NR']}"
+                            # Apply formatting from template's style
+                            if cell.paragraphs:
+                                for para in cell.paragraphs:
+                                    for run in para.runs:
+                                        run.font.size = Pt(11)
+                                        run.font.bold = True
+        else:
+            doc = Document()
+            logger.warning("Template not found, creating blank document")
+            # Set document margins
+            sections = doc.sections
+            for section in sections:
+                section.top_margin = Cm(2.5)
+                section.bottom_margin = Cm(2.5)
+                section.left_margin = Cm(2.5)
+                section.right_margin = Cm(2.5)
         
         # === PAGE 1: HEADER ===
         create_header_section(doc, data, page_num=1, total_pages=2)
@@ -633,17 +662,23 @@ def generate_document(data, output_path):
         # Title
         p = cell.paragraphs[0]
         run = p.add_run("Detaljerade resultat:")
-        set_arial_font(run, 11, bold=True)
+        run.font.name = 'Arial'
+        run.font.size = Pt(11)
+        run.font.bold = True
         p.paragraph_format.space_after = Pt(6)
         
         # Add methodology description
         p = cell.add_paragraph()
         run = p.add_run("Metodik: WES Genpanel, MPS data")
-        set_arial_font(run, 10, bold=True)
+        run.font.name = 'Arial'
+        run.font.size = Pt(10)
+        run.font.bold = True
         
         p = cell.add_paragraph()
         run = p.add_run("Analysresultat:")
-        set_arial_font(run, 10, bold=True)
+        run.font.name = 'Arial'
+        run.font.size = Pt(10)
+        run.font.bold = True
         p.paragraph_format.space_after = Pt(6)
         
         # Create results table inside the box
@@ -656,7 +691,9 @@ def generate_document(data, output_path):
             hcell = results_table.rows[0].cells[i]
             p = hcell.paragraphs[0]
             run = p.add_run(header)
-            set_arial_font(run, 10, bold=True)
+            run.font.name = 'Arial'
+            run.font.size = Pt(10)
+            run.font.bold = True
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         
         # Data rows
@@ -672,20 +709,24 @@ def generate_document(data, output_path):
                 vcell = results_table.rows[row_idx].cells[col_idx]
                 p = vcell.paragraphs[0]
                 run = p.add_run(value)
-                set_arial_font(run, 10)
+                run.font.name = 'Arial'
+                run.font.size = Pt(10)
         
         # Add interpretation text below table
         p = cell.add_paragraph()
         p.paragraph_format.space_before = Pt(12)
         run = p.add_run("Tolkning:")
-        set_arial_font(run, 10, bold=True)
+        run.font.name = 'Arial'
+        run.font.size = Pt(10)
+        run.font.bold = True
         
         for variant in data['variants']:
             p = cell.add_paragraph()
             clinvar = variant.get('ClinVar and hemophilia database reports', '')
             if clinvar:
                 run = p.add_run(clinvar)
-                set_arial_font(run, 10)
+                run.font.name = 'Arial'
+                run.font.size = Pt(10)
         
         # === PAGE 2: FOOTER ===
         create_footer_section(doc)
