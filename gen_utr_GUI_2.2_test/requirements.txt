@@ -1,0 +1,10 @@
+# Core dependencies
+python-docx>=0.8.11
+Pillow>=9.0.0
+
+# Export functionality (v2.4)
+openpyxl>=3.0.0
+docx2pdf>=0.1.8
+
+# Database integration (v2.4)
+sqlalchemy>=1.4.0
