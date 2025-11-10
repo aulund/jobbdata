@@ -59,7 +59,9 @@ DNA_IMAGE_FILE = "dna_helix.png"
 DNA_IMAGE_SIZE = (100, 100)
 
 # Sender information
-SENDER_INFO = "MVH August Lundholm, Molekylärbiolog"
+SENDER_INFO = """Professor, Överläkare: Jovan Antovic
+Sjukhuskemist: August Lundholm
+Biomedicinsk analytiker: Somia Echehli"""
 
 # Sequencing methods
 SEQUENCING_METHODS = ["MPS", "Sanger"]
