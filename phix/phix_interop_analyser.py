@@ -154,7 +154,7 @@ def export_csv(results, output_file):
 def main():
     parser = argparse.ArgumentParser(
         description='Extract PhiX alignment statistics from Illumina run folders',
-        epilog='Example: python phix_interop_analyzer.py /path/to/run/folder'
+        epilog='Example: python phix_interop_analyser.py /path/to/run/folder'
     )
     parser.add_argument(
         'run_folder',
