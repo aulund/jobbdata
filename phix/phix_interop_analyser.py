@@ -2,9 +2,13 @@
 """
 Script to extract PhiX alignment statistics from Illumina run folders using InterOp. 
 This uses the built-in PhiX metrics that Illumina software generates during sequencing.
+
+Note: This script reports only on sequencing reads (Read 1, Read 2), not index reads.
+Index reads are automatically filtered out from the analysis.
 """
 
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -59,36 +63,70 @@ def parse_interop_stats(run_folder):
         total_phix = 0
         total_error = 0
         lane_count = 0
+        valid_phix_count = 0
+        valid_error_count = 0
+        
+        # Track actual read number for sequencing reads only
+        sequencing_read_number = 0
         
         for read_idx in range(summary.size()):
             read_summary = summary.at(read_idx)
+            
+            # Get the read info to check if this is an index read
+            read_info = run_metrics.run_info().read(read_idx)
+            
+            # Skip index reads - we only want actual sequencing reads (Read 1, Read 2, etc.)
+            if read_info.is_index():
+                continue
+            
+            sequencing_read_number += 1
             read_data = {
-                'read_number': read_idx + 1,
+                'read_number': sequencing_read_number,
                 'lanes': []
             }
             
             for lane_idx in range(read_summary.size()):
                 lane_summary = read_summary.at(lane_idx)
                 
+                # Extract raw values
+                phix_value = lane_summary.percent_aligned().mean()
+                error_value = lane_summary.error_rate().mean()
+                density_value = lane_summary.density().mean() / 1000  # K/mm²
+                pf_value = lane_summary.percent_pf().mean()
+                
                 lane_data = {
                     'lane': lane_idx + 1,
-                    'percent_aligned_phix': lane_summary.percent_aligned().mean(),
-                    'error_rate': lane_summary.error_rate().mean(),
-                    'density': lane_summary.density().mean() / 1000,  # K/mm²
+                    'percent_aligned_phix': phix_value,
+                    'error_rate': error_value,
+                    'density': density_value,
                     'cluster_count': lane_summary.reads(),
-                    'percent_pf': lane_summary.percent_pf().mean()
+                    'percent_pf': pf_value
                 }
                 
                 read_data['lanes'].append(lane_data)
-                total_phix += lane_data['percent_aligned_phix']
-                total_error += lane_data['error_rate']
+                
+                # Only include valid (non-NaN) values in averages
+                if not math.isnan(phix_value):
+                    total_phix += phix_value
+                    valid_phix_count += 1
+                if not math.isnan(error_value):
+                    total_error += error_value
+                    valid_error_count += 1
+                    
                 lane_count += 1
             
             results['reads'].append(read_data)
         
-        if lane_count > 0:
-            results['overall']['average_phix_aligned'] = total_phix / lane_count
-            results['overall']['average_error_rate'] = total_error / lane_count
+        # Calculate averages only from valid values
+        if valid_phix_count > 0:
+            results['overall']['average_phix_aligned'] = total_phix / valid_phix_count
+        else:
+            results['overall']['average_phix_aligned'] = None
+            
+        if valid_error_count > 0:
+            results['overall']['average_error_rate'] = total_error / valid_error_count
+        else:
+            results['overall']['average_error_rate'] = None
         
         return results
     
@@ -103,11 +141,42 @@ def print_results(results, verbose=False):
     print(f"PhiX Analysis for: {results['run_folder']}")
     print(f"{'='*70}\n")
     
+    # Check if PhiX data is missing
+    has_valid_phix = any(
+        not math.isnan(lane['percent_aligned_phix']) and lane['percent_aligned_phix'] > 0
+        for read_data in results['reads']
+        for lane in read_data['lanes']
+    )
+    
     # Overall summary
     if results['overall']:
         print("OVERALL SUMMARY:")
-        print(f"  Average PhiX Aligned: {results['overall']['average_phix_aligned']:.2f}%")
-        print(f"  Average Error Rate:    {results['overall']['average_error_rate']:.3f}%")
+        avg_phix = results['overall']['average_phix_aligned']
+        avg_error = results['overall']['average_error_rate']
+        
+        print(f"  Sequencing Reads Analyzed: {len(results['reads'])} (index reads excluded)")
+        
+        if avg_phix is not None:
+            print(f"  Average PhiX Aligned: {avg_phix:.2f}%")
+        else:
+            print(f"  Average PhiX Aligned: N/A")
+            print(f"\n  ⚠ WARNING: No valid PhiX alignment data found!")
+            print(f"  This could mean:")
+            print(f"    - PhiX reads ended up as 'undetermined' (not demultiplexed)")
+            print(f"    - PhiX was not spiked into this run")
+            print(f"    - InterOp files don't contain PhiX alignment metrics")
+            print(f"    - The run may need to be analyzed with alignment to PhiX genome")
+            
+        if avg_error is not None:
+            print(f"  Average Error Rate:    {avg_error:.3f}%")
+        else:
+            print(f"  Average Error Rate:    N/A")
+        
+        if not has_valid_phix and avg_phix is not None and abs(avg_phix) < 1e-9:
+            print(f"\n  ⚠ NOTE: PhiX shows 0.00% aligned across all reads.")
+            print(f"  PhiX control sequences may be present but classified as 'undetermined'")
+            print(f"  because PhiX is typically unindexed. Check your undetermined FASTQ files")
+            print(f"  or realign to the PhiX genome to confirm PhiX presence.")
         print()
     
     # Per-read and per-lane details
@@ -117,12 +186,22 @@ def print_results(results, verbose=False):
         print(f"  {'-'*65}")
         
         for lane in read_data['lanes']:
+            # Format PhiX % - show N/A for NaN values
+            phix_str = f"{lane['percent_aligned_phix']:.2f}" if not math.isnan(lane['percent_aligned_phix']) else "N/A"
+            
+            # Format Error % - show N/A for NaN values
+            error_str = f"{lane['error_rate']:.3f}" if not math.isnan(lane['error_rate']) else "N/A"
+            
+            # Format other values
+            density_str = f"{lane['density']:.1f}" if not math.isnan(lane['density']) else "N/A"
+            pf_str = f"{lane['percent_pf']:.1f}" if not math.isnan(lane['percent_pf']) else "N/A"
+            
             print(f"  {lane['lane']:<6} "
-                  f"{lane['percent_aligned_phix']:<10.2f} "
-                  f"{lane['error_rate']:<10.3f} "
-                  f"{lane['density']:<12.1f} "
+                  f"{phix_str:<10} "
+                  f"{error_str:<10} "
+                  f"{density_str:<12} "
                   f"{lane['cluster_count']:<15,} "
-                  f"{lane['percent_pf']:<8.1f}")
+                  f"{pf_str:<8}")
         print()
 
 
@@ -138,14 +217,20 @@ def export_csv(results, output_file):
         writer.writeheader()
         for read_data in results['reads']:
             for lane in read_data['lanes']:
+                # Format values, using 'N/A' for NaN
+                phix_val = f"{lane['percent_aligned_phix']:.2f}" if not math.isnan(lane['percent_aligned_phix']) else "N/A"
+                error_val = f"{lane['error_rate']:.3f}" if not math.isnan(lane['error_rate']) else "N/A"
+                density_val = f"{lane['density']:.1f}" if not math.isnan(lane['density']) else "N/A"
+                pf_val = f"{lane['percent_pf']:.1f}" if not math.isnan(lane['percent_pf']) else "N/A"
+                
                 writer.writerow({
                     'Read': read_data['read_number'],
                     'Lane': lane['lane'],
-                    'PhiX_Percent': f"{lane['percent_aligned_phix']:.2f}",
-                    'Error_Rate': f"{lane['error_rate']:.3f}",
-                    'Density_K_per_mm2': f"{lane['density']:.1f}",
+                    'PhiX_Percent': phix_val,
+                    'Error_Rate': error_val,
+                    'Density_K_per_mm2': density_val,
                     'Cluster_Count': lane['cluster_count'],
-                    'Percent_PF': f"{lane['percent_pf']:.1f}"
+                    'Percent_PF': pf_val
                 })
     
     print(f"Results exported to: {output_file}")
