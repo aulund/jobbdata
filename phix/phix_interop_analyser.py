@@ -36,10 +36,10 @@ def parse_interop_stats(run_folder):
     
     try:
         # Initialize run metrics
-        run_metrics = py_interop_run_metrics. run_metrics()
+        run_metrics = py_interop_run_metrics.run_metrics()
         
         # Specify which metrics to load
-        valid_to_load = py_interop_run. uchar_vector(py_interop_run.MetricCount, 0)
+        valid_to_load = py_interop_run.uchar_vector(py_interop_run.MetricCount, 0)
         py_interop_run.list_summary_metrics_to_load(valid_to_load)
         
         # Read the run metrics
@@ -52,8 +52,8 @@ def parse_interop_stats(run_folder):
         # Extract PhiX statistics
         results = {
             'run_folder': run_folder,
-            'reads':  [],
-            'overall':  {}
+            'reads': [],
+            'overall': {}
         }
         
         total_phix = 0
@@ -71,7 +71,7 @@ def parse_interop_stats(run_folder):
                 lane_summary = read_summary.at(lane_idx)
                 
                 lane_data = {
-                    'lane':  lane_idx + 1,
+                    'lane': lane_idx + 1,
                     'percent_aligned_phix': lane_summary.percent_aligned().mean(),
                     'error_rate': lane_summary.error_rate().mean(),
                     'density': lane_summary.density().mean() / 1000,  # K/mm²
@@ -100,7 +100,7 @@ def parse_interop_stats(run_folder):
 def print_results(results, verbose=False):
     """Print formatted results."""
     print(f"\n{'='*70}")
-    print(f"PhiX Analysis for:  {results['run_folder']}")
+    print(f"PhiX Analysis for: {results['run_folder']}")
     print(f"{'='*70}\n")
     
     # Overall summary
@@ -111,7 +111,7 @@ def print_results(results, verbose=False):
         print()
     
     # Per-read and per-lane details
-    for read_data in results['reads']: 
+    for read_data in results['reads']:
         print(f"READ {read_data['read_number']}:")
         print(f"  {'Lane':<6} {'PhiX %':<10} {'Error %':<10} {'Density':<12} {'Clusters':<15} {'%PF':<8}")
         print(f"  {'-'*65}")
@@ -137,27 +137,28 @@ def export_csv(results, output_file):
         
         writer.writeheader()
         for read_data in results['reads']:
-            for lane in read_data['lanes']: 
+            for lane in read_data['lanes']:
                 writer.writerow({
                     'Read': read_data['read_number'],
                     'Lane': lane['lane'],
                     'PhiX_Percent': f"{lane['percent_aligned_phix']:.2f}",
-                    'Error_Rate':  f"{lane['error_rate']:.3f}",
+                    'Error_Rate': f"{lane['error_rate']:.3f}",
                     'Density_K_per_mm2': f"{lane['density']:.1f}",
                     'Cluster_Count': lane['cluster_count'],
                     'Percent_PF': f"{lane['percent_pf']:.1f}"
                 })
     
-    print(f"Results exported to:  {output_file}")
+    print(f"Results exported to: {output_file}")
 
 
 def main():
-    parser = argparse. ArgumentParser(
+    parser = argparse.ArgumentParser(
         description='Extract PhiX alignment statistics from Illumina run folders',
-        epilog='Example: python phix_interop_analyzer.py /path/to/run/folder'
+        epilog='Example: python phix_interop_analyser.py /path/to/run/folder'
     )
     parser.add_argument(
         'run_folder',
+        nargs='?',
         help='Path to Illumina run folder (contains InterOp directory)'
     )
     parser.add_argument(
@@ -172,8 +173,19 @@ def main():
     
     args = parser.parse_args()
     
+    # If no run_folder provided, prompt the user
+    run_folder = args.run_folder
+    if not run_folder:
+        print("No run folder specified.")
+        run_folder = input("Please enter the path to the Illumina sequencing run folder: ").strip()
+        
+        # Handle empty input
+        if not run_folder:
+            print("Error: No path provided.")
+            sys.exit(1)
+    
     # Parse InterOp data
-    results = parse_interop_stats(args.run_folder)
+    results = parse_interop_stats(run_folder)
     
     # Print results
     print_results(results, verbose=args.verbose)
