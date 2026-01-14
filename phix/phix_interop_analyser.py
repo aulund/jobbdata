@@ -40,7 +40,7 @@ def parse_interop_stats(run_folder):
         
         # Specify which metrics to load
         valid_to_load = py_interop_run.uchar_vector(py_interop_run.MetricCount, 0)
-        py_interop_run.list_summary_metrics_to_load(valid_to_load)
+        py_interop_run_metrics.list_summary_metrics_to_load(valid_to_load)
         
         # Read the run metrics
         run_metrics.read(str(run_folder_path), valid_to_load)
