@@ -142,14 +142,11 @@ def print_results(results, verbose=False):
     print(f"{'='*70}\n")
     
     # Check if PhiX data is missing
-    has_valid_phix = False
-    for read_data in results['reads']:
-        for lane in read_data['lanes']:
-            if not math.isnan(lane['percent_aligned_phix']) and lane['percent_aligned_phix'] > 0:
-                has_valid_phix = True
-                break
-        if has_valid_phix:
-            break
+    has_valid_phix = any(
+        not math.isnan(lane['percent_aligned_phix']) and lane['percent_aligned_phix'] > 0
+        for read_data in results['reads']
+        for lane in read_data['lanes']
+    )
     
     # Overall summary
     if results['overall']:
@@ -175,7 +172,7 @@ def print_results(results, verbose=False):
         else:
             print(f"  Average Error Rate:    N/A")
         
-        if not has_valid_phix and avg_phix is not None and avg_phix == 0:
+        if not has_valid_phix and avg_phix is not None and abs(avg_phix) < 1e-9:
             print(f"\n  ⚠ NOTE: PhiX shows 0.00% aligned across all reads.")
             print(f"  PhiX control sequences may be present but classified as 'undetermined'")
             print(f"  because PhiX is typically unindexed. Check your undetermined FASTQ files")

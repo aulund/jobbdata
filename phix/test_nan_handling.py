@@ -51,7 +51,7 @@ def test_average_calculation():
         average = None
     
     expected_average = (10.0 + 20.0 + 30.0) / 3  # 20.0
-    assert average == expected_average, f"Average calculation incorrect: {average} != {expected_average}"
+    assert abs(average - expected_average) < 1e-9, f"Average calculation incorrect: {average} != {expected_average}"
     print(f"  ✓ Average of [10.0, NaN, 20.0, NaN, 30.0] = {average} (expected {expected_average})")
     
     # Test all NaN
