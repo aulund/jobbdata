@@ -2,6 +2,9 @@
 """
 Script to extract PhiX alignment statistics from Illumina run folders using InterOp. 
 This uses the built-in PhiX metrics that Illumina software generates during sequencing.
+
+Note: This script reports only on sequencing reads (Read 1, Read 2), not index reads.
+Index reads are automatically filtered out from the analysis.
 """
 
 import argparse
@@ -63,10 +66,22 @@ def parse_interop_stats(run_folder):
         valid_phix_count = 0
         valid_error_count = 0
         
+        # Track actual read number for sequencing reads only
+        sequencing_read_number = 0
+        
         for read_idx in range(summary.size()):
             read_summary = summary.at(read_idx)
+            
+            # Get the read info to check if this is an index read
+            read_info = run_metrics.run_info().read(read_idx)
+            
+            # Skip index reads - we only want actual sequencing reads (Read 1, Read 2, etc.)
+            if read_info.is_index():
+                continue
+            
+            sequencing_read_number += 1
             read_data = {
-                'read_number': read_idx + 1,
+                'read_number': sequencing_read_number,
                 'lanes': []
             }
             
@@ -141,6 +156,8 @@ def print_results(results, verbose=False):
         print("OVERALL SUMMARY:")
         avg_phix = results['overall']['average_phix_aligned']
         avg_error = results['overall']['average_error_rate']
+        
+        print(f"  Sequencing Reads Analyzed: {len(results['reads'])} (index reads excluded)")
         
         if avg_phix is not None:
             print(f"  Average PhiX Aligned: {avg_phix:.2f}%")
