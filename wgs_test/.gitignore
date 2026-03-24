@@ -1,0 +1,26 @@
+# Large data files - DO NOT commit to git
+*.fastq.gz
+*.bam
+*.bam.bai
+*.vcf.gz
+*.vcf.gz.tbi
+*.zip
+*.xlsx
+
+# Filtered/intermediate files
+filtered_variants.vcf
+annotated_variants.vcf
+
+# Nextflow work directory
+work/
+.nextflow/
+.nextflow.log*
+results/
+
+# SnpEff
+snpEff/
+snpeff_stats.csv
+
+# Python cache
+__pycache__/
+*.pyc

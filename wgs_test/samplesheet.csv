@@ -1,0 +1,2 @@
+patient,sample,lane,fastq_1,fastq_2
+patient1,ngs_test_01,lane_1,ngs_test_01_R1.fastq.gz,ngs_test_01_R2.fastq.gz
